@@ -1,0 +1,3 @@
+[submodule "vizarr"]
+	path = vizarr
+	url = https://github.com/biongff/vizarr.git
