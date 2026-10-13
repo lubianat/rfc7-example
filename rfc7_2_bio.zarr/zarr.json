@@ -1,0 +1,227 @@
+{
+  "attributes": {
+    "ome": {
+      "version": "0.x",
+      "type": "multiscale",
+      "id": "01a1353f-d2b3-7f0b-a955-1fc9180ad76f",
+      "name": "image",
+      "coordinate_systems": [
+        {
+          "id": "01a1353f-d2b3-76df-8eaf-14c61c4f398c",
+          "name": "physical",
+          "axes": [
+            {
+              "name": "c",
+              "type": "channel"
+            },
+            {
+              "name": "z",
+              "type": "space",
+              "unit": "micrometer"
+            },
+            {
+              "name": "y",
+              "type": "space",
+              "unit": "micrometer"
+            },
+            {
+              "name": "x",
+              "type": "space",
+              "unit": "micrometer"
+            }
+          ]
+        }
+      ],
+      "coordinates": [
+        {
+          "id": "01a13540-13f4-7c55-afee-812695596bd6",
+          "axis": "c",
+          "values": [
+            "01a13540-13f4-721a-a28b-301743f651c6",
+            "01a13540-13f4-7ff4-b735-d9e6f244a243"
+          ]
+        },
+        {
+          "id": "01a13540-13f4-7161-8ba0-89114bb40c28",
+          "axis": "z",
+          "intervals": [
+            {
+              "id": "01a13540-13f4-7ae5-9fd5-5b00f3988642",
+              "start": 100,
+              "stop": 151,
+              "label": "middle of the organoid"
+            }
+          ]
+        }
+      ],
+      "scales": [
+        {
+          "id": "01a1353f-d2b3-73dc-a831-0a05ab4e446f",
+          "path": {
+            "type": "zarr",
+            "format": "relative",
+            "href": "./0"
+          },
+          "coordinate_transformations": [
+            {
+              "scale": [
+                1.0,
+                0.5002025531914894,
+                0.3603981534640209,
+                0.3603981534640209
+              ],
+              "type": "scale",
+              "input": {
+                "type": "scale",
+                "ref": "01a1353f-d2b3-73dc-a831-0a05ab4e446f"
+              },
+              "output": {
+                "type": "coordinate_system",
+                "ref": "01a1353f-d2b3-76df-8eaf-14c61c4f398c"
+              }
+            }
+          ]
+        },
+        {
+          "id": "01a1353f-d2b3-7871-bf23-a60e2d5d41d2",
+          "path": {
+            "type": "zarr",
+            "format": "relative",
+            "href": "./1"
+          },
+          "coordinate_transformations": [
+            {
+              "scale": [
+                1.0,
+                0.5002025531914894,
+                0.7207963069280418,
+                0.7207963069280418
+              ],
+              "type": "scale",
+              "input": {
+                "type": "scale",
+                "ref": "01a1353f-d2b3-7871-bf23-a60e2d5d41d2"
+              },
+              "output": {
+                "type": "coordinate_system",
+                "ref": "01a1353f-d2b3-76df-8eaf-14c61c4f398c"
+              }
+            }
+          ]
+        },
+        {
+          "id": "01a1353f-d2b3-722b-b175-fc8b5df40224",
+          "path": {
+            "type": "zarr",
+            "format": "relative",
+            "href": "./2"
+          },
+          "coordinate_transformations": [
+            {
+              "scale": [
+                1.0,
+                0.5002025531914894,
+                1.4415926138560835,
+                1.4415926138560835
+              ],
+              "type": "scale",
+              "input": {
+                "type": "scale",
+                "ref": "01a1353f-d2b3-722b-b175-fc8b5df40224"
+              },
+              "output": {
+                "type": "coordinate_system",
+                "ref": "01a1353f-d2b3-76df-8eaf-14c61c4f398c"
+              }
+            }
+          ]
+        }
+      ],
+      "traits": [
+        {
+          "type": "https://example.org/biological-metadata/biological_metadata",
+          "channels": [
+            {
+              "channel": {
+                "type": "channel",
+                "ref": "01a13540-13f4-721a-a28b-301743f651c6"
+              },
+              "entities": [
+                {
+                  "name": "Alexa Fluor 555",
+                  "role": "signal"
+                },
+                {
+                  "name": "Lamin B1",
+                  "role": "target",
+                  "external_id": "uniprot:P14733"
+                },
+                {
+                  "name": "nuclear lamina",
+                  "role": "observed_entity",
+                  "external_id": "go:0005652"
+                }
+              ],
+              "relationships": [
+                {
+                  "subject": "Alexa Fluor 555",
+                  "relation": "tags",
+                  "object": "Lamin B1"
+                },
+                {
+                  "subject": "Lamin B1",
+                  "relation": "located_in",
+                  "object": "nuclear lamina"
+                }
+              ]
+            },
+            {
+              "channel": {
+                "type": "channel",
+                "ref": "01a13540-13f4-7ff4-b735-d9e6f244a243"
+              },
+              "entities": [
+                {
+                  "name": "DAPI",
+                  "role": "signal",
+                  "external_id": "chebi:51231"
+                },
+                {
+                  "name": "DNA",
+                  "role": "target",
+                  "external_id": "chebi:16991"
+                },
+                {
+                  "name": "nucleus",
+                  "role": "observed_entity",
+                  "external_id": "go:0005634"
+                }
+              ],
+              "relationships": [
+                {
+                  "subject": "DAPI",
+                  "relation": "stains",
+                  "object": "DNA"
+                },
+                {
+                  "subject": "DNA",
+                  "relation": "located_in",
+                  "object": "nucleus"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "extension_manifest": [
+        {
+          "id": "https://example.org/biological-metadata/",
+          "version": "0.1",
+          "schemas": []
+        }
+      ]
+    }
+  },
+  "zarr_format": 3,
+  "node_type": "group"
+}

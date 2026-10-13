@@ -1,0 +1,211 @@
+{
+  "attributes": {
+    "ome": {
+      "version": "0.x",
+      "type": "multiscale",
+      "id": "01a1353f-eee0-71b1-ab43-c04015d267de",
+      "name": "seg_dapi",
+      "coordinate_systems": [
+        {
+          "id": "01a1353f-eee0-7d87-90b7-d244cbbee669",
+          "name": "physical",
+          "axes": [
+            {
+              "name": "c",
+              "type": "channel"
+            },
+            {
+              "name": "z",
+              "type": "space",
+              "unit": "micrometer"
+            },
+            {
+              "name": "y",
+              "type": "space",
+              "unit": "micrometer"
+            },
+            {
+              "name": "x",
+              "type": "space",
+              "unit": "micrometer"
+            }
+          ]
+        }
+      ],
+      "coordinates": [
+        {
+          "id": "01a13540-16a0-7b54-b52f-1ccf6cb3cbb5",
+          "axis": "c",
+          "values": [
+            "01a13540-16a0-7eb7-acac-ed6c7bfa0aa7"
+          ]
+        }
+      ],
+      "scales": [
+        {
+          "id": "01a1353f-eee0-77e0-8f35-04de00e8a738",
+          "path": {
+            "type": "zarr",
+            "format": "relative",
+            "href": "./s0"
+          },
+          "coordinate_transformations": [
+            {
+              "scale": [
+                1.0,
+                0.5002025531914894,
+                0.3603981534640209,
+                0.3603981534640209
+              ],
+              "type": "scale",
+              "input": {
+                "type": "scale",
+                "ref": "01a1353f-eee0-77e0-8f35-04de00e8a738"
+              },
+              "output": {
+                "type": "coordinate_system",
+                "ref": "01a1353f-eee0-7d87-90b7-d244cbbee669"
+              }
+            }
+          ]
+        },
+        {
+          "id": "01a1353f-eee0-7e1b-a821-254fd31cc5d3",
+          "path": {
+            "type": "zarr",
+            "format": "relative",
+            "href": "./s1"
+          },
+          "coordinate_transformations": [
+            {
+              "scale": [
+                1.0,
+                0.5002025531914894,
+                0.7207963069280418,
+                0.7207963069280418
+              ],
+              "type": "scale",
+              "input": {
+                "type": "scale",
+                "ref": "01a1353f-eee0-7e1b-a821-254fd31cc5d3"
+              },
+              "output": {
+                "type": "coordinate_system",
+                "ref": "01a1353f-eee0-7d87-90b7-d244cbbee669"
+              }
+            }
+          ]
+        },
+        {
+          "id": "01a1353f-eee0-716e-b32a-88d4b0d2ba98",
+          "path": {
+            "type": "zarr",
+            "format": "relative",
+            "href": "./s2"
+          },
+          "coordinate_transformations": [
+            {
+              "scale": [
+                1.0,
+                0.5002025531914894,
+                1.4415926138560835,
+                1.4415926138560835
+              ],
+              "type": "scale",
+              "input": {
+                "type": "scale",
+                "ref": "01a1353f-eee0-716e-b32a-88d4b0d2ba98"
+              },
+              "output": {
+                "type": "coordinate_system",
+                "ref": "01a1353f-eee0-7d87-90b7-d244cbbee669"
+              }
+            }
+          ]
+        }
+      ],
+      "traits": [
+        {
+          "type": "labels",
+          "source": [
+            {
+              "type": "multiscale",
+              "ref": "01a1353f-d2b3-7f0b-a955-1fc9180ad76f"
+            }
+          ],
+          "label_attributes": [
+            {
+              "label_value": 1
+            },
+            {
+              "label_value": 2
+            },
+            {
+              "label_value": 3
+            },
+            {
+              "label_value": 4
+            },
+            {
+              "label_value": 5
+            },
+            {
+              "label_value": 6
+            },
+            {
+              "label_value": 7
+            },
+            {
+              "label_value": 8
+            },
+            {
+              "label_value": 9
+            },
+            {
+              "label_value": 10
+            },
+            {
+              "label_value": 11
+            },
+            {
+              "label_value": 12
+            },
+            {
+              "label_value": 13
+            },
+            {
+              "label_value": 14
+            }
+          ]
+        },
+        {
+          "type": "https://example.org/biological-metadata/biological_metadata",
+          "channels": [
+            {
+              "channel": {
+                "type": "channel",
+                "ref": "01a13540-16a0-7eb7-acac-ed6c7bfa0aa7"
+              },
+              "entities": [
+                {
+                  "name": "nucleus",
+                  "role": "observed_entity",
+                  "external_id": "go:0005634"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "extension_manifest": [
+        {
+          "id": "https://example.org/biological-metadata/",
+          "version": "0.1",
+          "schemas": []
+        }
+      ]
+    }
+  },
+  "zarr_format": 3,
+  "node_type": "group"
+}

@@ -1,0 +1,145 @@
+{
+  "attributes": {
+    "ome": {
+      "version": "0.x",
+      "type": "multiscale",
+      "id": "01a1353f-d2b3-7f0b-a955-1fc9180ad76f",
+      "name": "image",
+      "coordinate_systems": [
+        {
+          "id": "01a1353f-d2b3-76df-8eaf-14c61c4f398c",
+          "name": "physical",
+          "axes": [
+            {
+              "name": "c",
+              "type": "channel"
+            },
+            {
+              "name": "z",
+              "type": "space",
+              "unit": "micrometer"
+            },
+            {
+              "name": "y",
+              "type": "space",
+              "unit": "micrometer"
+            },
+            {
+              "name": "x",
+              "type": "space",
+              "unit": "micrometer"
+            }
+          ]
+        }
+      ],
+      "coordinates": [
+        {
+          "id": "01a13540-1351-77fb-aeec-45cff35bf0a1",
+          "axis": "c",
+          "values": [
+            "01a13540-1351-78b5-abc8-fcc163194cac",
+            "01a13540-1351-749c-94ab-45644fccbf88"
+          ]
+        },
+        {
+          "id": "01a13540-1351-7df5-b859-c7b63ceab1db",
+          "axis": "z",
+          "intervals": [
+            {
+              "id": "01a13540-1351-7090-b27a-50e5fdfb19df",
+              "start": 100,
+              "stop": 151,
+              "label": "middle of the organoid"
+            }
+          ]
+        }
+      ],
+      "scales": [
+        {
+          "id": "01a1353f-d2b3-73dc-a831-0a05ab4e446f",
+          "path": {
+            "type": "zarr",
+            "format": "relative",
+            "href": "./0"
+          },
+          "coordinate_transformations": [
+            {
+              "scale": [
+                1.0,
+                0.5002025531914894,
+                0.3603981534640209,
+                0.3603981534640209
+              ],
+              "type": "scale",
+              "input": {
+                "type": "scale",
+                "ref": "01a1353f-d2b3-73dc-a831-0a05ab4e446f"
+              },
+              "output": {
+                "type": "coordinate_system",
+                "ref": "01a1353f-d2b3-76df-8eaf-14c61c4f398c"
+              }
+            }
+          ]
+        },
+        {
+          "id": "01a1353f-d2b3-7871-bf23-a60e2d5d41d2",
+          "path": {
+            "type": "zarr",
+            "format": "relative",
+            "href": "./1"
+          },
+          "coordinate_transformations": [
+            {
+              "scale": [
+                1.0,
+                0.5002025531914894,
+                0.7207963069280418,
+                0.7207963069280418
+              ],
+              "type": "scale",
+              "input": {
+                "type": "scale",
+                "ref": "01a1353f-d2b3-7871-bf23-a60e2d5d41d2"
+              },
+              "output": {
+                "type": "coordinate_system",
+                "ref": "01a1353f-d2b3-76df-8eaf-14c61c4f398c"
+              }
+            }
+          ]
+        },
+        {
+          "id": "01a1353f-d2b3-722b-b175-fc8b5df40224",
+          "path": {
+            "type": "zarr",
+            "format": "relative",
+            "href": "./2"
+          },
+          "coordinate_transformations": [
+            {
+              "scale": [
+                1.0,
+                0.5002025531914894,
+                1.4415926138560835,
+                1.4415926138560835
+              ],
+              "type": "scale",
+              "input": {
+                "type": "scale",
+                "ref": "01a1353f-d2b3-722b-b175-fc8b5df40224"
+              },
+              "output": {
+                "type": "coordinate_system",
+                "ref": "01a1353f-d2b3-76df-8eaf-14c61c4f398c"
+              }
+            }
+          ]
+        }
+      ],
+      "traits": []
+    }
+  },
+  "zarr_format": 3,
+  "node_type": "group"
+}
