@@ -1,0 +1,93 @@
+{
+  "attributes": {
+    "ome": {
+      "version": "0.x",
+      "type": "collection",
+      "id": "01a13540-0dd4-7337-883d-441ad320e893",
+      "name": "6001240_labels",
+      "nodes": [
+        {
+          "type": "multiscale",
+          "id": "01a1353f-d2b3-7f0b-a955-1fc9180ad76f",
+          "name": "image",
+          "path": {
+            "type": "zarr",
+            "format": "relative",
+            "href": "./image"
+          }
+        },
+        {
+          "type": "multiscale",
+          "id": "01a1353f-eee0-71b1-ab43-c04015d267de",
+          "name": "seg_dapi",
+          "path": {
+            "type": "zarr",
+            "format": "relative",
+            "href": "./seg_dapi"
+          }
+        },
+        {
+          "type": "multiscale",
+          "id": "01a13540-0dd0-7b85-8e82-3cc836c5aedc",
+          "name": "seg_laminb1",
+          "path": {
+            "type": "zarr",
+            "format": "relative",
+            "href": "./seg_laminb1"
+          }
+        }
+      ],
+      "traits": [
+        {
+          "type": "scene",
+          "coordinate_transformations": [
+            {
+              "type": "identity",
+              "input": {
+                "type": "coordinate_system",
+                "ref": "01a1353f-eee0-7d87-90b7-d244cbbee669",
+                "path": {
+                  "type": "zarr",
+                  "format": "relative",
+                  "href": "./seg_dapi"
+                }
+              },
+              "output": {
+                "type": "coordinate_system",
+                "ref": "01a1353f-d2b3-76df-8eaf-14c61c4f398c",
+                "path": {
+                  "type": "zarr",
+                  "format": "relative",
+                  "href": "./image"
+                }
+              }
+            },
+            {
+              "type": "identity",
+              "input": {
+                "type": "coordinate_system",
+                "ref": "01a13540-0dd0-7ac1-afc9-39ddfcf2cf78",
+                "path": {
+                  "type": "zarr",
+                  "format": "relative",
+                  "href": "./seg_laminb1"
+                }
+              },
+              "output": {
+                "type": "coordinate_system",
+                "ref": "01a1353f-d2b3-76df-8eaf-14c61c4f398c",
+                "path": {
+                  "type": "zarr",
+                  "format": "relative",
+                  "href": "./image"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "zarr_format": 3,
+  "node_type": "group"
+}

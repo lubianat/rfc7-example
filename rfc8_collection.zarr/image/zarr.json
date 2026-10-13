@@ -1,0 +1,189 @@
+{
+  "attributes": {
+    "ome": {
+      "version": "0.x",
+      "type": "multiscale",
+      "id": "01a1353f-d2b3-7f0b-a955-1fc9180ad76f",
+      "name": "image",
+      "coordinate_systems": [
+        {
+          "id": "01a1353f-d2b3-76df-8eaf-14c61c4f398c",
+          "name": "physical",
+          "axes": [
+            {
+              "name": "c",
+              "type": "channel"
+            },
+            {
+              "name": "z",
+              "type": "space",
+              "unit": "micrometer"
+            },
+            {
+              "name": "y",
+              "type": "space",
+              "unit": "micrometer"
+            },
+            {
+              "name": "x",
+              "type": "space",
+              "unit": "micrometer"
+            }
+          ]
+        }
+      ],
+      "scales": [
+        {
+          "id": "01a1353f-d2b3-73dc-a831-0a05ab4e446f",
+          "path": {
+            "type": "zarr",
+            "format": "relative",
+            "href": "./0"
+          },
+          "coordinate_transformations": [
+            {
+              "scale": [
+                1.0,
+                0.5002025531914894,
+                0.3603981534640209,
+                0.3603981534640209
+              ],
+              "type": "scale",
+              "input": {
+                "type": "scale",
+                "ref": "01a1353f-d2b3-73dc-a831-0a05ab4e446f"
+              },
+              "output": {
+                "type": "coordinate_system",
+                "ref": "01a1353f-d2b3-76df-8eaf-14c61c4f398c"
+              }
+            }
+          ]
+        },
+        {
+          "id": "01a1353f-d2b3-7871-bf23-a60e2d5d41d2",
+          "path": {
+            "type": "zarr",
+            "format": "relative",
+            "href": "./1"
+          },
+          "coordinate_transformations": [
+            {
+              "scale": [
+                1.0,
+                0.5002025531914894,
+                0.7207963069280418,
+                0.7207963069280418
+              ],
+              "type": "scale",
+              "input": {
+                "type": "scale",
+                "ref": "01a1353f-d2b3-7871-bf23-a60e2d5d41d2"
+              },
+              "output": {
+                "type": "coordinate_system",
+                "ref": "01a1353f-d2b3-76df-8eaf-14c61c4f398c"
+              }
+            }
+          ]
+        },
+        {
+          "id": "01a1353f-d2b3-722b-b175-fc8b5df40224",
+          "path": {
+            "type": "zarr",
+            "format": "relative",
+            "href": "./2"
+          },
+          "coordinate_transformations": [
+            {
+              "scale": [
+                1.0,
+                0.5002025531914894,
+                1.4415926138560835,
+                1.4415926138560835
+              ],
+              "type": "scale",
+              "input": {
+                "type": "scale",
+                "ref": "01a1353f-d2b3-722b-b175-fc8b5df40224"
+              },
+              "output": {
+                "type": "coordinate_system",
+                "ref": "01a1353f-d2b3-76df-8eaf-14c61c4f398c"
+              }
+            }
+          ]
+        }
+      ],
+      "traits": [
+        {
+          "type": "https://example.org/omero-rendering/rendering",
+          "channels": [
+            {
+              "active": true,
+              "coefficient": 1.0,
+              "color": "0000FF",
+              "family": "linear",
+              "inverted": false,
+              "label": "LaminB1",
+              "window": {
+                "end": 1500.0,
+                "max": 65535.0,
+                "min": 0.0,
+                "start": 0.0
+              }
+            },
+            {
+              "active": true,
+              "coefficient": 1.0,
+              "color": "FFFF00",
+              "family": "linear",
+              "inverted": false,
+              "label": "Dapi",
+              "window": {
+                "end": 1500.0,
+                "max": 65535.0,
+                "min": 0.0,
+                "start": 0.0
+              }
+            }
+          ],
+          "id": 1,
+          "rdefs": {
+            "defaultT": 0,
+            "defaultZ": 118,
+            "model": "color"
+          }
+        },
+        {
+          "type": "https://example.org/embedded-labels/embedded_labels",
+          "nodes": [
+            {
+              "type": "multiscale",
+              "id": "01a1353f-d2b3-7e7a-aad9-046ffc6c04a0",
+              "path": {
+                "type": "zarr",
+                "format": "relative",
+                "href": "./labels/0"
+              }
+            }
+          ]
+        }
+      ],
+      "extension_manifest": [
+        {
+          "id": "https://example.org/omero-rendering/",
+          "version": "0.1",
+          "schemas": []
+        },
+        {
+          "id": "https://example.org/embedded-labels/",
+          "version": "0.1",
+          "schemas": []
+        }
+      ]
+    }
+  },
+  "zarr_format": 3,
+  "node_type": "group"
+}
