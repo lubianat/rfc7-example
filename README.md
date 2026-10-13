@@ -48,3 +48,9 @@ Some fields were filled in **only to demonstrate the format**. They may not matc
 - **Objective** taken from the paper's S1 Table (40x/1.30 Oil); the embedded Leica metadata says 63x/1.40
   (kept as an XML comment).
 - All extension namespaces (`https://example.org/...`) are placeholders.
+
+## AI use
+
+Code, metadata and this README were drafted with Claude Code (Claude Opus 5.5, `claude-opus-5-5`),
+using the ponytail plugin (minimal-code style) and Bio-Formats `showinf` for the OME-XML. All choices
+were directed and reviewed by the human operator, who takes full responsibility for the content.
