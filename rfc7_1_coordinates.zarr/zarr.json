@@ -3,11 +3,11 @@
     "ome": {
       "version": "0.x",
       "type": "multiscale",
-      "id": "01a135e1-0529-709e-9371-b0d91c5ea834",
+      "id": "01a1366c-2cf5-700a-8cb0-1a92a0b290dc",
       "name": "image",
       "coordinate_systems": [
         {
-          "id": "01a135e1-0529-7e34-b757-99a6fdd19f1b",
+          "id": "01a1366c-2cf5-7698-85ed-e696167922b3",
           "name": "physical",
           "axes": [
             {
@@ -34,25 +34,25 @@
       ],
       "coordinates": [
         {
-          "id": "01a135e1-38a4-78d4-9b73-d891a74c1877",
+          "id": "01a1366c-852b-77f7-90e1-91d3c1d4c382",
           "type": "channel",
           "axis": "c",
           "element_ids": [
-            "01a135e1-38a4-78a2-9d02-f48f2e4c250c",
-            "01a135e1-38a4-73d4-84c0-25d2ce1465c5"
+            "01a1366c-852b-7fb6-889d-421a0d3512ae",
+            "01a1366c-852b-735d-a54a-2afeeae12069"
           ],
           "element_names": [
-            "lamin_b1",
+            "laminb1",
             "dapi"
           ]
         },
         {
-          "id": "01a135e1-38a4-743c-b9ca-2909bea1e7b3",
+          "id": "01a1366c-852b-7aec-bc3b-b167dcde6d0c",
           "type": "space",
           "axis": "z",
           "intervals": [
             {
-              "id": "01a135e1-38a4-72ca-b1f9-fdbaff83dde4",
+              "id": "01a1366c-852b-7c9f-ab94-20a8113cad73",
               "start": 100,
               "stop": 151,
               "label": "middle of the organoid"
@@ -62,7 +62,7 @@
       ],
       "scales": [
         {
-          "id": "01a135e1-0529-777a-abb4-9a401191c4c8",
+          "id": "01a1366c-2cf5-7f6a-b2d8-07959402adf3",
           "path": {
             "type": "zarr",
             "format": "relative",
@@ -79,17 +79,17 @@
               "type": "scale",
               "input": {
                 "type": "scale",
-                "ref": "01a135e1-0529-777a-abb4-9a401191c4c8"
+                "ref": "01a1366c-2cf5-7f6a-b2d8-07959402adf3"
               },
               "output": {
                 "type": "coordinate_system",
-                "ref": "01a135e1-0529-7e34-b757-99a6fdd19f1b"
+                "ref": "01a1366c-2cf5-7698-85ed-e696167922b3"
               }
             }
           ]
         },
         {
-          "id": "01a135e1-0529-7d6a-8247-25231239f711",
+          "id": "01a1366c-2cf5-7613-8d8c-7862a6b76976",
           "path": {
             "type": "zarr",
             "format": "relative",
@@ -106,17 +106,17 @@
               "type": "scale",
               "input": {
                 "type": "scale",
-                "ref": "01a135e1-0529-7d6a-8247-25231239f711"
+                "ref": "01a1366c-2cf5-7613-8d8c-7862a6b76976"
               },
               "output": {
                 "type": "coordinate_system",
-                "ref": "01a135e1-0529-7e34-b757-99a6fdd19f1b"
+                "ref": "01a1366c-2cf5-7698-85ed-e696167922b3"
               }
             }
           ]
         },
         {
-          "id": "01a135e1-0529-75f1-8678-ea9e32cf9aed",
+          "id": "01a1366c-2cf5-716a-aa1b-54e572e6fc96",
           "path": {
             "type": "zarr",
             "format": "relative",
@@ -133,11 +133,11 @@
               "type": "scale",
               "input": {
                 "type": "scale",
-                "ref": "01a135e1-0529-75f1-8678-ea9e32cf9aed"
+                "ref": "01a1366c-2cf5-716a-aa1b-54e572e6fc96"
               },
               "output": {
                 "type": "coordinate_system",
-                "ref": "01a135e1-0529-7e34-b757-99a6fdd19f1b"
+                "ref": "01a1366c-2cf5-7698-85ed-e696167922b3"
               }
             }
           ]

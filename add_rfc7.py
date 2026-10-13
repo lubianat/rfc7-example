@@ -45,7 +45,7 @@ METADATA = "https://example.org/ome-xml-metadata/"  # ponytail: placeholder name
 SIDECAR = "https://example.org/ome-xml-sidecar/"  # ponytail: placeholder namespace
 BIO = "https://example.org/biological-metadata/"  # ponytail: placeholder namespace
 # omero channel label -> element_names slug (^[a-z][a-z0-9_]*$)
-ELEMENT_NAMES = {"LaminB1": "lamin_b1", "Dapi": "dapi"}
+ELEMENT_NAMES = {"LaminB1": "laminb1", "Dapi": "dapi"}
 BIO_CHANNELS = {
     "Dapi": {
         "entities": [{"name": "DAPI", "role": "signal", "external_id": "chebi:51231"},

@@ -3,11 +3,11 @@
     "ome": {
       "version": "0.x",
       "type": "multiscale",
-      "id": "01a135e1-0529-72bd-b9ac-96cfea08165f",
+      "id": "01a1366c-2cf5-7150-843f-5ac4fd7053c3",
       "name": "default_seg",
       "coordinate_systems": [
         {
-          "id": "01a135e1-0529-7b62-a1c4-7e551242670b",
+          "id": "01a1366c-2cf5-75d0-93fa-dfca01093ed6",
           "name": "physical",
           "axes": [
             {
@@ -34,11 +34,11 @@
       ],
       "coordinates": [
         {
-          "id": "01a135e1-3c3f-7a2d-90c4-cbf54e192eaf",
+          "id": "01a1366c-8ad4-7b5f-a900-f3327122a4b3",
           "type": "channel",
           "axis": "c",
           "element_ids": [
-            "01a135e1-3c3f-721f-8bbc-f063674e7be3"
+            "01a1366c-8ad4-7757-b9b5-4d5522730a2d"
           ],
           "element_names": [
             "default_seg"
@@ -47,7 +47,7 @@
       ],
       "scales": [
         {
-          "id": "01a135e1-0529-7b46-a4a2-fb73c0727f00",
+          "id": "01a1366c-2cf5-78cc-9349-ad56ad0bd9ef",
           "path": {
             "type": "zarr",
             "format": "relative",
@@ -64,17 +64,17 @@
               ],
               "input": {
                 "type": "scale",
-                "ref": "01a135e1-0529-7b46-a4a2-fb73c0727f00"
+                "ref": "01a1366c-2cf5-78cc-9349-ad56ad0bd9ef"
               },
               "output": {
                 "type": "coordinate_system",
-                "ref": "01a135e1-0529-7b62-a1c4-7e551242670b"
+                "ref": "01a1366c-2cf5-75d0-93fa-dfca01093ed6"
               }
             }
           ]
         },
         {
-          "id": "01a135e1-0529-785a-a2a1-6703b0dd651d",
+          "id": "01a1366c-2cf5-7620-b8a2-1ac63c66db31",
           "path": {
             "type": "zarr",
             "format": "relative",
@@ -91,17 +91,17 @@
               ],
               "input": {
                 "type": "scale",
-                "ref": "01a135e1-0529-785a-a2a1-6703b0dd651d"
+                "ref": "01a1366c-2cf5-7620-b8a2-1ac63c66db31"
               },
               "output": {
                 "type": "coordinate_system",
-                "ref": "01a135e1-0529-7b62-a1c4-7e551242670b"
+                "ref": "01a1366c-2cf5-75d0-93fa-dfca01093ed6"
               }
             }
           ]
         },
         {
-          "id": "01a135e1-0529-765d-9747-a6377baefbd3",
+          "id": "01a1366c-2cf5-7d91-985c-c4090f4888eb",
           "path": {
             "type": "zarr",
             "format": "relative",
@@ -118,11 +118,11 @@
               ],
               "input": {
                 "type": "scale",
-                "ref": "01a135e1-0529-765d-9747-a6377baefbd3"
+                "ref": "01a1366c-2cf5-7d91-985c-c4090f4888eb"
               },
               "output": {
                 "type": "coordinate_system",
-                "ref": "01a135e1-0529-7b62-a1c4-7e551242670b"
+                "ref": "01a1366c-2cf5-75d0-93fa-dfca01093ed6"
               }
             }
           ]
@@ -999,7 +999,7 @@
             {
               "channel": {
                 "type": "channel",
-                "ref": "01a135e1-3c3f-721f-8bbc-f063674e7be3"
+                "ref": "01a1366c-8ad4-7757-b9b5-4d5522730a2d"
               },
               "entities": [
                 {

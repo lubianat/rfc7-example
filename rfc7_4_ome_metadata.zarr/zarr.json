@@ -3,11 +3,11 @@
     "ome": {
       "version": "0.x",
       "type": "multiscale",
-      "id": "01a135e1-0529-709e-9371-b0d91c5ea834",
+      "id": "01a1366c-2cf5-700a-8cb0-1a92a0b290dc",
       "name": "image",
       "coordinate_systems": [
         {
-          "id": "01a135e1-0529-7e34-b757-99a6fdd19f1b",
+          "id": "01a1366c-2cf5-7698-85ed-e696167922b3",
           "name": "physical",
           "axes": [
             {
@@ -34,25 +34,25 @@
       ],
       "coordinates": [
         {
-          "id": "01a135e1-3a50-7688-8725-389da9fe84b8",
+          "id": "01a1366c-883b-7a56-a5fc-a785a8fdf58c",
           "type": "channel",
           "axis": "c",
           "element_ids": [
-            "01a135e1-3a50-73e5-88e6-331b3f35c2a7",
-            "01a135e1-3a50-7b22-a116-925352d271c8"
+            "01a1366c-883a-7f71-ae85-3e913841c563",
+            "01a1366c-883a-7c38-bc64-b7c54a2e174a"
           ],
           "element_names": [
-            "lamin_b1",
+            "laminb1",
             "dapi"
           ]
         },
         {
-          "id": "01a135e1-3a50-7ad5-bd93-c06d72441105",
+          "id": "01a1366c-883b-7b5e-a3a5-802d0b5a5221",
           "type": "space",
           "axis": "z",
           "intervals": [
             {
-              "id": "01a135e1-3a50-78dc-a785-b0ae1627667c",
+              "id": "01a1366c-883b-749c-8cdb-33f32aacd2a4",
               "start": 100,
               "stop": 151,
               "label": "middle of the organoid"
@@ -62,7 +62,7 @@
       ],
       "scales": [
         {
-          "id": "01a135e1-0529-777a-abb4-9a401191c4c8",
+          "id": "01a1366c-2cf5-7f6a-b2d8-07959402adf3",
           "path": {
             "type": "zarr",
             "format": "relative",
@@ -79,17 +79,17 @@
               "type": "scale",
               "input": {
                 "type": "scale",
-                "ref": "01a135e1-0529-777a-abb4-9a401191c4c8"
+                "ref": "01a1366c-2cf5-7f6a-b2d8-07959402adf3"
               },
               "output": {
                 "type": "coordinate_system",
-                "ref": "01a135e1-0529-7e34-b757-99a6fdd19f1b"
+                "ref": "01a1366c-2cf5-7698-85ed-e696167922b3"
               }
             }
           ]
         },
         {
-          "id": "01a135e1-0529-7d6a-8247-25231239f711",
+          "id": "01a1366c-2cf5-7613-8d8c-7862a6b76976",
           "path": {
             "type": "zarr",
             "format": "relative",
@@ -106,17 +106,17 @@
               "type": "scale",
               "input": {
                 "type": "scale",
-                "ref": "01a135e1-0529-7d6a-8247-25231239f711"
+                "ref": "01a1366c-2cf5-7613-8d8c-7862a6b76976"
               },
               "output": {
                 "type": "coordinate_system",
-                "ref": "01a135e1-0529-7e34-b757-99a6fdd19f1b"
+                "ref": "01a1366c-2cf5-7698-85ed-e696167922b3"
               }
             }
           ]
         },
         {
-          "id": "01a135e1-0529-75f1-8678-ea9e32cf9aed",
+          "id": "01a1366c-2cf5-716a-aa1b-54e572e6fc96",
           "path": {
             "type": "zarr",
             "format": "relative",
@@ -133,11 +133,11 @@
               "type": "scale",
               "input": {
                 "type": "scale",
-                "ref": "01a135e1-0529-75f1-8678-ea9e32cf9aed"
+                "ref": "01a1366c-2cf5-716a-aa1b-54e572e6fc96"
               },
               "output": {
                 "type": "coordinate_system",
-                "ref": "01a135e1-0529-7e34-b757-99a6fdd19f1b"
+                "ref": "01a1366c-2cf5-7698-85ed-e696167922b3"
               }
             }
           ]
@@ -155,7 +155,7 @@
             {
               "channel": {
                 "type": "channel",
-                "ref": "01a135e1-3a50-73e5-88e6-331b3f35c2a7"
+                "ref": "01a1366c-883a-7f71-ae85-3e913841c563"
               },
               "active": true,
               "coefficient": 1.0,
@@ -173,7 +173,7 @@
             {
               "channel": {
                 "type": "channel",
-                "ref": "01a135e1-3a50-7b22-a116-925352d271c8"
+                "ref": "01a1366c-883a-7c38-bc64-b7c54a2e174a"
               },
               "active": true,
               "coefficient": 1.0,
@@ -196,7 +196,7 @@
             {
               "channel": {
                 "type": "channel",
-                "ref": "01a135e1-3a50-73e5-88e6-331b3f35c2a7"
+                "ref": "01a1366c-883a-7f71-ae85-3e913841c563"
               },
               "entities": [
                 {
@@ -230,7 +230,7 @@
             {
               "channel": {
                 "type": "channel",
-                "ref": "01a135e1-3a50-7b22-a116-925352d271c8"
+                "ref": "01a1366c-883a-7c38-bc64-b7c54a2e174a"
               },
               "entities": [
                 {
@@ -283,7 +283,7 @@
             {
               "channel": {
                 "type": "channel",
-                "ref": "01a135e1-3a50-73e5-88e6-331b3f35c2a7"
+                "ref": "01a1366c-883a-7f71-ae85-3e913841c563"
               },
               "name": "LaminB1",
               "fluor": "Alexa Fluor 555",
@@ -298,7 +298,7 @@
             {
               "channel": {
                 "type": "channel",
-                "ref": "01a135e1-3a50-7b22-a116-925352d271c8"
+                "ref": "01a1366c-883a-7c38-bc64-b7c54a2e174a"
               },
               "name": "Dapi",
               "fluor": "DAPI",
