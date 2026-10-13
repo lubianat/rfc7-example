@@ -25,6 +25,8 @@ This rebuilds every output from scratch, so ids (UUIDv7) differ from the committ
 
 - `to_rfc8.py` -> `rfc8_collection.zarr/`: RFC-8 collection with nodes `image/` (with its original
   segmentation embedded at `image/labels/0`), `seg_dapi/` and `seg_laminb1/` (simple Otsu segmentations).
+  `seg_dapi`/`seg_laminb1` are z,y,x and show the **implicit channel** coordinate (no `axis`, scalar
+  `element_ids`/`element_names`); `default_seg` keeps the original size-1 `c` axis (explicit form).
 - `add_rfc7.py` -> seven cumulative RFC-7 examples:
 
 | Output | Root | Adds |

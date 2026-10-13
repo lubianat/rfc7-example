@@ -3,12 +3,12 @@
     "ome": {
       "version": "0.x",
       "type": "collection",
-      "id": "01a13540-0dd4-7337-883d-441ad320e893",
+      "id": "01a135e1-328b-702c-9bdb-b0392acdf040",
       "name": "6001240_labels",
       "nodes": [
         {
           "type": "multiscale",
-          "id": "01a1353f-d2b3-7f0b-a955-1fc9180ad76f",
+          "id": "01a135e1-0529-709e-9371-b0d91c5ea834",
           "name": "image",
           "path": {
             "type": "zarr",
@@ -18,7 +18,7 @@
         },
         {
           "type": "multiscale",
-          "id": "01a1353f-eee0-71b1-ab43-c04015d267de",
+          "id": "01a135e1-1dab-7c1e-be2a-39499da566fc",
           "name": "seg_dapi",
           "path": {
             "type": "zarr",
@@ -28,7 +28,7 @@
         },
         {
           "type": "multiscale",
-          "id": "01a13540-0dd0-7b85-8e82-3cc836c5aedc",
+          "id": "01a135e1-3284-7061-820b-e3555c1ea362",
           "name": "seg_laminb1",
           "path": {
             "type": "zarr",
@@ -45,7 +45,7 @@
               "type": "identity",
               "input": {
                 "type": "coordinate_system",
-                "ref": "01a1353f-eee0-7d87-90b7-d244cbbee669",
+                "ref": "01a135e1-1dab-7801-9298-517f2fc94eeb",
                 "path": {
                   "type": "zarr",
                   "format": "relative",
@@ -54,7 +54,7 @@
               },
               "output": {
                 "type": "coordinate_system",
-                "ref": "01a1353f-d2b3-76df-8eaf-14c61c4f398c",
+                "ref": "01a135e1-0529-7e34-b757-99a6fdd19f1b",
                 "path": {
                   "type": "zarr",
                   "format": "relative",
@@ -66,7 +66,7 @@
               "type": "identity",
               "input": {
                 "type": "coordinate_system",
-                "ref": "01a13540-0dd0-7ac1-afc9-39ddfcf2cf78",
+                "ref": "01a135e1-3284-7c7e-a2e0-07b9cd39f8b0",
                 "path": {
                   "type": "zarr",
                   "format": "relative",
@@ -75,7 +75,7 @@
               },
               "output": {
                 "type": "coordinate_system",
-                "ref": "01a1353f-d2b3-76df-8eaf-14c61c4f398c",
+                "ref": "01a135e1-0529-7e34-b757-99a6fdd19f1b",
                 "path": {
                   "type": "zarr",
                   "format": "relative",

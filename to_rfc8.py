@@ -170,12 +170,16 @@ def main() -> None:
     nodes = [{"type": "multiscale", "id": img["id"], "name": IMAGE, "path": path(f"./{IMAGE}")}]
     transforms = []
     for node, (c, fill) in SEGS.items():
-        seg = segment(src[datasets[0]["path"]][c], fill)[None]  # keep c axis, size 1
+        seg = segment(src[datasets[0]["path"]][c], fill)  # z,y,x: no c axis (implicit channel)
         g = zarr.open_group(OUT / node, mode="w")
         for i, ds in enumerate(datasets):
             h, w = src[ds["path"]].shape[-2:]  # source pyramid floors odd sizes
-            g.create_array(f"s{i}", data=seg[..., :: 2**i, :: 2**i][..., :h, :w], chunks=(1, 10, 256, 256))
-        doc = multiscale(src_ome["multiscales"][0], node, [{
+            g.create_array(f"s{i}", data=seg[..., :: 2**i, :: 2**i][..., :h, :w], chunks=(10, 256, 256))
+        ms = src_ome["multiscales"][0]
+        zyx = {"axes": ms["axes"][1:], "datasets": [  # drop c from axes and scale factors
+            {**ds, "coordinateTransformations": [{**t, "scale": t["scale"][1:]} for t in ds["coordinateTransformations"]]}
+            for ds in ms["datasets"]]}
+        doc = multiscale(zyx, node, [{
             "type": "labels",
             "source": [ref("multiscale", img["id"])],  # resolves via the collection's image node
             "label_attributes": [{"label_value": v} for v in range(1, int(seg.max()) + 1)],
@@ -219,5 +223,5 @@ if __name__ == "__main__":
     a = zarr.open_group(OUT / IMAGE)
     for node in SEGS:
         b = zarr.open_group(OUT / node)
-        assert all(a[str(i)].shape[1:] == b[f"s{i}"].shape[1:] for i in range(3)), node
+        assert all(a[str(i)].shape[1:] == b[f"s{i}"].shape for i in range(3)), node
     print("ok")

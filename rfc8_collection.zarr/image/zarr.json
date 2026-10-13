@@ -3,11 +3,11 @@
     "ome": {
       "version": "0.x",
       "type": "multiscale",
-      "id": "01a1353f-d2b3-7f0b-a955-1fc9180ad76f",
+      "id": "01a135e1-0529-709e-9371-b0d91c5ea834",
       "name": "image",
       "coordinate_systems": [
         {
-          "id": "01a1353f-d2b3-76df-8eaf-14c61c4f398c",
+          "id": "01a135e1-0529-7e34-b757-99a6fdd19f1b",
           "name": "physical",
           "axes": [
             {
@@ -34,7 +34,7 @@
       ],
       "scales": [
         {
-          "id": "01a1353f-d2b3-73dc-a831-0a05ab4e446f",
+          "id": "01a135e1-0529-777a-abb4-9a401191c4c8",
           "path": {
             "type": "zarr",
             "format": "relative",
@@ -51,17 +51,17 @@
               "type": "scale",
               "input": {
                 "type": "scale",
-                "ref": "01a1353f-d2b3-73dc-a831-0a05ab4e446f"
+                "ref": "01a135e1-0529-777a-abb4-9a401191c4c8"
               },
               "output": {
                 "type": "coordinate_system",
-                "ref": "01a1353f-d2b3-76df-8eaf-14c61c4f398c"
+                "ref": "01a135e1-0529-7e34-b757-99a6fdd19f1b"
               }
             }
           ]
         },
         {
-          "id": "01a1353f-d2b3-7871-bf23-a60e2d5d41d2",
+          "id": "01a135e1-0529-7d6a-8247-25231239f711",
           "path": {
             "type": "zarr",
             "format": "relative",
@@ -78,17 +78,17 @@
               "type": "scale",
               "input": {
                 "type": "scale",
-                "ref": "01a1353f-d2b3-7871-bf23-a60e2d5d41d2"
+                "ref": "01a135e1-0529-7d6a-8247-25231239f711"
               },
               "output": {
                 "type": "coordinate_system",
-                "ref": "01a1353f-d2b3-76df-8eaf-14c61c4f398c"
+                "ref": "01a135e1-0529-7e34-b757-99a6fdd19f1b"
               }
             }
           ]
         },
         {
-          "id": "01a1353f-d2b3-722b-b175-fc8b5df40224",
+          "id": "01a135e1-0529-75f1-8678-ea9e32cf9aed",
           "path": {
             "type": "zarr",
             "format": "relative",
@@ -105,11 +105,11 @@
               "type": "scale",
               "input": {
                 "type": "scale",
-                "ref": "01a1353f-d2b3-722b-b175-fc8b5df40224"
+                "ref": "01a135e1-0529-75f1-8678-ea9e32cf9aed"
               },
               "output": {
                 "type": "coordinate_system",
-                "ref": "01a1353f-d2b3-76df-8eaf-14c61c4f398c"
+                "ref": "01a135e1-0529-7e34-b757-99a6fdd19f1b"
               }
             }
           ]
@@ -160,7 +160,7 @@
           "nodes": [
             {
               "type": "multiscale",
-              "id": "01a1353f-d2b3-7e7a-aad9-046ffc6c04a0",
+              "id": "01a135e1-0529-72bd-b9ac-96cfea08165f",
               "path": {
                 "type": "zarr",
                 "format": "relative",

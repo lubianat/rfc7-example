@@ -3,11 +3,11 @@
     "ome": {
       "version": "0.x",
       "type": "multiscale",
-      "id": "01a1353f-d2b3-7f0b-a955-1fc9180ad76f",
+      "id": "01a135e1-0529-709e-9371-b0d91c5ea834",
       "name": "image",
       "coordinate_systems": [
         {
-          "id": "01a1353f-d2b3-76df-8eaf-14c61c4f398c",
+          "id": "01a135e1-0529-7e34-b757-99a6fdd19f1b",
           "name": "physical",
           "axes": [
             {
@@ -34,12 +34,12 @@
       ],
       "coordinates": [
         {
-          "id": "01a135b2-cf2d-7e56-820b-65fd4394bcc7",
+          "id": "01a135e1-392c-7775-bdc3-8efb1b01a849",
           "type": "channel",
           "axis": "c",
           "element_ids": [
-            "01a135b2-cf2d-70b3-be22-fb1503ca41c7",
-            "01a135b2-cf2d-70d9-9c4c-71a1576f0163"
+            "01a135e1-392c-761b-a00d-129ac8bca215",
+            "01a135e1-392c-7f47-bca5-c5894a2fcb01"
           ],
           "element_names": [
             "lamin_b1",
@@ -47,12 +47,12 @@
           ]
         },
         {
-          "id": "01a135b2-cf2e-7d3d-ae30-77797cce9702",
+          "id": "01a135e1-392c-7e81-8ca5-5f208be45232",
           "type": "space",
           "axis": "z",
           "intervals": [
             {
-              "id": "01a135b2-cf2e-7338-85b1-529c852897c8",
+              "id": "01a135e1-392c-7649-a4ac-031cb605ea62",
               "start": 100,
               "stop": 151,
               "label": "middle of the organoid"
@@ -62,7 +62,7 @@
       ],
       "scales": [
         {
-          "id": "01a1353f-d2b3-73dc-a831-0a05ab4e446f",
+          "id": "01a135e1-0529-777a-abb4-9a401191c4c8",
           "path": {
             "type": "zarr",
             "format": "relative",
@@ -79,17 +79,17 @@
               "type": "scale",
               "input": {
                 "type": "scale",
-                "ref": "01a1353f-d2b3-73dc-a831-0a05ab4e446f"
+                "ref": "01a135e1-0529-777a-abb4-9a401191c4c8"
               },
               "output": {
                 "type": "coordinate_system",
-                "ref": "01a1353f-d2b3-76df-8eaf-14c61c4f398c"
+                "ref": "01a135e1-0529-7e34-b757-99a6fdd19f1b"
               }
             }
           ]
         },
         {
-          "id": "01a1353f-d2b3-7871-bf23-a60e2d5d41d2",
+          "id": "01a135e1-0529-7d6a-8247-25231239f711",
           "path": {
             "type": "zarr",
             "format": "relative",
@@ -106,17 +106,17 @@
               "type": "scale",
               "input": {
                 "type": "scale",
-                "ref": "01a1353f-d2b3-7871-bf23-a60e2d5d41d2"
+                "ref": "01a135e1-0529-7d6a-8247-25231239f711"
               },
               "output": {
                 "type": "coordinate_system",
-                "ref": "01a1353f-d2b3-76df-8eaf-14c61c4f398c"
+                "ref": "01a135e1-0529-7e34-b757-99a6fdd19f1b"
               }
             }
           ]
         },
         {
-          "id": "01a1353f-d2b3-722b-b175-fc8b5df40224",
+          "id": "01a135e1-0529-75f1-8678-ea9e32cf9aed",
           "path": {
             "type": "zarr",
             "format": "relative",
@@ -133,11 +133,11 @@
               "type": "scale",
               "input": {
                 "type": "scale",
-                "ref": "01a1353f-d2b3-722b-b175-fc8b5df40224"
+                "ref": "01a135e1-0529-75f1-8678-ea9e32cf9aed"
               },
               "output": {
                 "type": "coordinate_system",
-                "ref": "01a1353f-d2b3-76df-8eaf-14c61c4f398c"
+                "ref": "01a135e1-0529-7e34-b757-99a6fdd19f1b"
               }
             }
           ]
@@ -150,7 +150,7 @@
             {
               "channel": {
                 "type": "channel",
-                "ref": "01a135b2-cf2d-70b3-be22-fb1503ca41c7"
+                "ref": "01a135e1-392c-761b-a00d-129ac8bca215"
               },
               "entities": [
                 {
@@ -184,7 +184,7 @@
             {
               "channel": {
                 "type": "channel",
-                "ref": "01a135b2-cf2d-70d9-9c4c-71a1576f0163"
+                "ref": "01a135e1-392c-7f47-bca5-c5894a2fcb01"
               },
               "entities": [
                 {

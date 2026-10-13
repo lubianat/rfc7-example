@@ -3,17 +3,13 @@
     "ome": {
       "version": "0.x",
       "type": "multiscale",
-      "id": "01a1353f-eee0-71b1-ab43-c04015d267de",
+      "id": "01a135e1-1dab-7c1e-be2a-39499da566fc",
       "name": "seg_dapi",
       "coordinate_systems": [
         {
-          "id": "01a1353f-eee0-7d87-90b7-d244cbbee669",
+          "id": "01a135e1-1dab-7801-9298-517f2fc94eeb",
           "name": "physical",
           "axes": [
-            {
-              "name": "c",
-              "type": "channel"
-            },
             {
               "name": "z",
               "type": "space",
@@ -34,20 +30,15 @@
       ],
       "coordinates": [
         {
-          "id": "01a135b2-d386-7d96-a0cc-27945af7c563",
+          "id": "01a135e1-3cfb-7cd2-8e3a-1284937d1c47",
           "type": "channel",
-          "axis": "c",
-          "element_ids": [
-            "01a135b2-d386-7da8-bdfd-90f325f74303"
-          ],
-          "element_names": [
-            "seg_dapi"
-          ]
+          "element_ids": "01a135e1-3cfb-7d07-838c-18efdac41cd3",
+          "element_names": "seg_dapi"
         }
       ],
       "scales": [
         {
-          "id": "01a1353f-eee0-77e0-8f35-04de00e8a738",
+          "id": "01a135e1-1dab-79be-8327-b49902909902",
           "path": {
             "type": "zarr",
             "format": "relative",
@@ -56,7 +47,6 @@
           "coordinate_transformations": [
             {
               "scale": [
-                1.0,
                 0.5002025531914894,
                 0.3603981534640209,
                 0.3603981534640209
@@ -64,17 +54,17 @@
               "type": "scale",
               "input": {
                 "type": "scale",
-                "ref": "01a1353f-eee0-77e0-8f35-04de00e8a738"
+                "ref": "01a135e1-1dab-79be-8327-b49902909902"
               },
               "output": {
                 "type": "coordinate_system",
-                "ref": "01a1353f-eee0-7d87-90b7-d244cbbee669"
+                "ref": "01a135e1-1dab-7801-9298-517f2fc94eeb"
               }
             }
           ]
         },
         {
-          "id": "01a1353f-eee0-7e1b-a821-254fd31cc5d3",
+          "id": "01a135e1-1dab-7679-8469-9c87e6d1979c",
           "path": {
             "type": "zarr",
             "format": "relative",
@@ -83,7 +73,6 @@
           "coordinate_transformations": [
             {
               "scale": [
-                1.0,
                 0.5002025531914894,
                 0.7207963069280418,
                 0.7207963069280418
@@ -91,17 +80,17 @@
               "type": "scale",
               "input": {
                 "type": "scale",
-                "ref": "01a1353f-eee0-7e1b-a821-254fd31cc5d3"
+                "ref": "01a135e1-1dab-7679-8469-9c87e6d1979c"
               },
               "output": {
                 "type": "coordinate_system",
-                "ref": "01a1353f-eee0-7d87-90b7-d244cbbee669"
+                "ref": "01a135e1-1dab-7801-9298-517f2fc94eeb"
               }
             }
           ]
         },
         {
-          "id": "01a1353f-eee0-716e-b32a-88d4b0d2ba98",
+          "id": "01a135e1-1dab-7b29-adca-5cf59d6e7158",
           "path": {
             "type": "zarr",
             "format": "relative",
@@ -110,7 +99,6 @@
           "coordinate_transformations": [
             {
               "scale": [
-                1.0,
                 0.5002025531914894,
                 1.4415926138560835,
                 1.4415926138560835
@@ -118,11 +106,11 @@
               "type": "scale",
               "input": {
                 "type": "scale",
-                "ref": "01a1353f-eee0-716e-b32a-88d4b0d2ba98"
+                "ref": "01a135e1-1dab-7b29-adca-5cf59d6e7158"
               },
               "output": {
                 "type": "coordinate_system",
-                "ref": "01a1353f-eee0-7d87-90b7-d244cbbee669"
+                "ref": "01a135e1-1dab-7801-9298-517f2fc94eeb"
               }
             }
           ]
@@ -134,7 +122,7 @@
           "source": [
             {
               "type": "multiscale",
-              "ref": "01a1353f-d2b3-7f0b-a955-1fc9180ad76f"
+              "ref": "01a135e1-0529-709e-9371-b0d91c5ea834"
             }
           ],
           "label_attributes": [
@@ -188,7 +176,7 @@
             {
               "channel": {
                 "type": "channel",
-                "ref": "01a135b2-d386-7da8-bdfd-90f325f74303"
+                "ref": "01a135e1-3cfb-7d07-838c-18efdac41cd3"
               },
               "entities": [
                 {

@@ -95,14 +95,17 @@ def add_coordinates(group: Path, features: set) -> None:
     doc = load(group)
     ome = doc["attributes"]["ome"]
     axes = ome["coordinate_systems"][0]["axes"]
-    c = next(i for i, a in enumerate(axes) if a["type"] == "channel")
-    n = load(group / ome["scales"][0]["path"]["href"])["shape"][c]
+    c = next((i for i, a in enumerate(axes) if a["type"] == "channel"), None)
+    n = load(group / ome["scales"][0]["path"]["href"])["shape"][c] if c is not None else 1
     values = [uuid7() for _ in range(n)]
     omero = next((t for t in ome["traits"] if t["type"] == RENDERING + "rendering"), None)
     # element_names: local slugs for scripting, never reference targets; segs use their own name
     names = [ELEMENT_NAMES[ch["label"]] for ch in omero["channels"]] if omero else [ome["name"]]
-    coords = [{"id": uuid7(), "type": "channel", "axis": axes[c]["name"],
-               "element_ids": values, "element_names": names}]
+    if c is None:  # implicit channel: no c dim, no axis, scalar element_ids/element_names
+        coords = [{"id": uuid7(), "type": "channel", "element_ids": values[0], "element_names": names[0]}]
+    else:
+        coords = [{"id": uuid7(), "type": "channel", "axis": axes[c]["name"],
+                   "element_ids": values, "element_names": names}]
     # core field next to coordinate_systems (dict order keeps it adjacent in the JSON)
     items = list(ome.items())
     items.insert(list(ome).index("coordinate_systems") + 1, ("coordinates", coords))
@@ -231,9 +234,14 @@ def check(out: Path, features: set) -> None:
         co, *rest = ome["coordinates"]
         shape = load(g / ome["scales"][0]["path"]["href"])["shape"]
         axis_types = {a["name"]: a["type"] for a in ome["coordinate_systems"][0]["axes"]}
-        assert all(axis_types[x["axis"]] == x["type"] for x in ome["coordinates"]), g
+        assert all(axis_types[x["axis"]] == x["type"] for x in ome["coordinates"] if "axis" in x), g
         assert [x["type"] for x in ome["coordinates"]].count("channel") == 1, g
-        assert len(co["element_ids"]) == len(co["element_names"]) == shape[0], g
+        if "axis" not in co:  # implicit: scalars, and the array really has no channel dim
+            assert isinstance(co["element_ids"], str) and isinstance(co["element_names"], str), g
+            assert "channel" not in axis_types.values() and len(shape) == len(axis_types), g
+            co = {**co, "element_ids": [co["element_ids"]], "element_names": [co["element_names"]]}
+        else:
+            assert len(co["element_ids"]) == len(co["element_names"]) == shape[0], g
         assert all(re.fullmatch(r"[a-z][a-z0-9_]*", n) for n in co["element_names"]), g
         assert len(set(co["element_names"])) == len(co["element_names"]), g
         ids += [co["id"], *co["element_ids"]]
