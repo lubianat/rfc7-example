@@ -187,6 +187,7 @@ def main() -> None:
         set_ome(OUT / node, doc)
         nodes.append({"type": "multiscale", "id": doc["id"], "name": node, "path": path(f"./{node}")})
         transforms.append({
+            # ponytail: z,y,x seg -> c,z,y,x image is not a strict identity; kept on purpose (open spec question)
             "type": "identity",
             "input": ref("coordinate_system", doc["coordinate_systems"][0]["id"], f"./{node}"),
             "output": ref("coordinate_system", img["coordinate_systems"][0]["id"], f"./{IMAGE}"),
