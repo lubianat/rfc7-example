@@ -1,0 +1,4 @@
+__pycache__/
+.DS_Store
+# generated outputs: commit metadata only, chunks are rebuilt by the scripts (see README)
+rfc*.zarr/**/c/
