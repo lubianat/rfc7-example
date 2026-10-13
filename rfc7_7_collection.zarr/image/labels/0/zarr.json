@@ -34,10 +34,14 @@
       ],
       "coordinates": [
         {
-          "id": "01a13540-16a0-7c3e-b60a-630e9801186e",
+          "id": "01a135b2-d385-7248-ac4a-5cc1375ae2cf",
+          "type": "channel",
           "axis": "c",
-          "values": [
-            "01a13540-16a0-768c-a3ad-d8f5377f18b9"
+          "element_ids": [
+            "01a135b2-d385-7031-8973-d43296c07f10"
+          ],
+          "element_names": [
+            "default_seg"
           ]
         }
       ],
@@ -995,7 +999,7 @@
             {
               "channel": {
                 "type": "channel",
-                "ref": "01a13540-16a0-768c-a3ad-d8f5377f18b9"
+                "ref": "01a135b2-d385-7031-8973-d43296c07f10"
               },
               "entities": [
                 {

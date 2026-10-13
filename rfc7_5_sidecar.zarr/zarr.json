@@ -34,19 +34,25 @@
       ],
       "coordinates": [
         {
-          "id": "01a13540-154c-7d55-afb3-f4ef70b502e6",
+          "id": "01a135b2-d178-7d5a-9d88-741838524593",
+          "type": "channel",
           "axis": "c",
-          "values": [
-            "01a13540-154c-7532-a975-8795429de7d1",
-            "01a13540-154c-7d52-82c1-ea15ded4c231"
+          "element_ids": [
+            "01a135b2-d178-7b40-9551-38919af7e1c2",
+            "01a135b2-d178-7fba-9eaf-d408a159e406"
+          ],
+          "element_names": [
+            "lamin_b1",
+            "dapi"
           ]
         },
         {
-          "id": "01a13540-154c-7fad-902c-b7d7caef1484",
+          "id": "01a135b2-d178-7a5a-9d16-3f86c2db2dfa",
+          "type": "space",
           "axis": "z",
           "intervals": [
             {
-              "id": "01a13540-154c-725e-a2a6-f207916308c2",
+              "id": "01a135b2-d178-71aa-954d-267283b0fd4f",
               "start": 100,
               "stop": 151,
               "label": "middle of the organoid"
@@ -149,7 +155,7 @@
             {
               "channel": {
                 "type": "channel",
-                "ref": "01a13540-154c-7532-a975-8795429de7d1"
+                "ref": "01a135b2-d178-7b40-9551-38919af7e1c2"
               },
               "active": true,
               "coefficient": 1.0,
@@ -167,7 +173,7 @@
             {
               "channel": {
                 "type": "channel",
-                "ref": "01a13540-154c-7d52-82c1-ea15ded4c231"
+                "ref": "01a135b2-d178-7fba-9eaf-d408a159e406"
               },
               "active": true,
               "coefficient": 1.0,
@@ -190,7 +196,7 @@
             {
               "channel": {
                 "type": "channel",
-                "ref": "01a13540-154c-7532-a975-8795429de7d1"
+                "ref": "01a135b2-d178-7b40-9551-38919af7e1c2"
               },
               "entities": [
                 {
@@ -224,7 +230,7 @@
             {
               "channel": {
                 "type": "channel",
-                "ref": "01a13540-154c-7d52-82c1-ea15ded4c231"
+                "ref": "01a135b2-d178-7fba-9eaf-d408a159e406"
               },
               "entities": [
                 {
@@ -277,7 +283,7 @@
             {
               "channel": {
                 "type": "channel",
-                "ref": "01a13540-154c-7532-a975-8795429de7d1"
+                "ref": "01a135b2-d178-7b40-9551-38919af7e1c2"
               },
               "name": "LaminB1",
               "fluor": "Alexa Fluor 555",
@@ -292,7 +298,7 @@
             {
               "channel": {
                 "type": "channel",
-                "ref": "01a13540-154c-7d52-82c1-ea15ded4c231"
+                "ref": "01a135b2-d178-7fba-9eaf-d408a159e406"
               },
               "name": "Dapi",
               "fluor": "DAPI",

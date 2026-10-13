@@ -34,19 +34,25 @@
       ],
       "coordinates": [
         {
-          "id": "01a13540-146d-70a8-9221-4577f678fa19",
+          "id": "01a135b2-d00b-7caa-8e6b-1ee6b766a557",
+          "type": "channel",
           "axis": "c",
-          "values": [
-            "01a13540-146d-78b7-b2ae-d3b2e8a9ade0",
-            "01a13540-146d-7400-a1fe-e4801eecfbc5"
+          "element_ids": [
+            "01a135b2-d00b-7e96-8ba7-db784e91d1b8",
+            "01a135b2-d00b-77e3-98de-7eb63592bac3"
+          ],
+          "element_names": [
+            "lamin_b1",
+            "dapi"
           ]
         },
         {
-          "id": "01a13540-146d-7fac-96af-4d664a6bd47b",
+          "id": "01a135b2-d00b-7f17-b018-4b3b6c20e411",
+          "type": "space",
           "axis": "z",
           "intervals": [
             {
-              "id": "01a13540-146d-70ff-902b-5f6b8e43afff",
+              "id": "01a135b2-d00b-760f-ba46-8cfecac0a2ff",
               "start": 100,
               "stop": 151,
               "label": "middle of the organoid"
@@ -149,7 +155,7 @@
             {
               "channel": {
                 "type": "channel",
-                "ref": "01a13540-146d-78b7-b2ae-d3b2e8a9ade0"
+                "ref": "01a135b2-d00b-7e96-8ba7-db784e91d1b8"
               },
               "active": true,
               "coefficient": 1.0,
@@ -167,7 +173,7 @@
             {
               "channel": {
                 "type": "channel",
-                "ref": "01a13540-146d-7400-a1fe-e4801eecfbc5"
+                "ref": "01a135b2-d00b-77e3-98de-7eb63592bac3"
               },
               "active": true,
               "coefficient": 1.0,
@@ -190,7 +196,7 @@
             {
               "channel": {
                 "type": "channel",
-                "ref": "01a13540-146d-78b7-b2ae-d3b2e8a9ade0"
+                "ref": "01a135b2-d00b-7e96-8ba7-db784e91d1b8"
               },
               "entities": [
                 {
@@ -224,7 +230,7 @@
             {
               "channel": {
                 "type": "channel",
-                "ref": "01a13540-146d-7400-a1fe-e4801eecfbc5"
+                "ref": "01a135b2-d00b-77e3-98de-7eb63592bac3"
               },
               "entities": [
                 {

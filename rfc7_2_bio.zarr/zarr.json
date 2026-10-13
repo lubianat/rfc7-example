@@ -34,19 +34,25 @@
       ],
       "coordinates": [
         {
-          "id": "01a13540-13f4-7c55-afee-812695596bd6",
+          "id": "01a135b2-cf2d-7e56-820b-65fd4394bcc7",
+          "type": "channel",
           "axis": "c",
-          "values": [
-            "01a13540-13f4-721a-a28b-301743f651c6",
-            "01a13540-13f4-7ff4-b735-d9e6f244a243"
+          "element_ids": [
+            "01a135b2-cf2d-70b3-be22-fb1503ca41c7",
+            "01a135b2-cf2d-70d9-9c4c-71a1576f0163"
+          ],
+          "element_names": [
+            "lamin_b1",
+            "dapi"
           ]
         },
         {
-          "id": "01a13540-13f4-7161-8ba0-89114bb40c28",
+          "id": "01a135b2-cf2e-7d3d-ae30-77797cce9702",
+          "type": "space",
           "axis": "z",
           "intervals": [
             {
-              "id": "01a13540-13f4-7ae5-9fd5-5b00f3988642",
+              "id": "01a135b2-cf2e-7338-85b1-529c852897c8",
               "start": 100,
               "stop": 151,
               "label": "middle of the organoid"
@@ -144,7 +150,7 @@
             {
               "channel": {
                 "type": "channel",
-                "ref": "01a13540-13f4-721a-a28b-301743f651c6"
+                "ref": "01a135b2-cf2d-70b3-be22-fb1503ca41c7"
               },
               "entities": [
                 {
@@ -178,7 +184,7 @@
             {
               "channel": {
                 "type": "channel",
-                "ref": "01a13540-13f4-7ff4-b735-d9e6f244a243"
+                "ref": "01a135b2-cf2d-70d9-9c4c-71a1576f0163"
               },
               "entities": [
                 {

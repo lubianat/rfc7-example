@@ -1,6 +1,6 @@
 """Copy rfc8_collection.zarr into seven cumulative examples (EXAMPLES) and add the RFC-7 draft
 channel/axis reference mechanism (ngff#580) to every multiscale: a core `coordinates` field
-(next to coordinate_systems) giving the channel axis an id and one UUID per channel index. The omero rendering trait becomes
+(next to coordinate_systems) with `type`, `axis`, one `element_ids` UUID and one `element_names` slug per channel. The omero rendering trait becomes
 a `default_rendering` trait referencing those channel UUIDs, and the image gets a labelled
 z interval (Z_INTERVALS) a biological_metadata extension trait (BIO_CHANNELS),
 and the OME-XML sidecar (OME_XML) copied in with an ome_xml_sidecar extension trait (pointer)
@@ -9,6 +9,7 @@ plus an ome_xml_metadata extension trait (its fields as JSON).
 Run after to_rfc8.py: uv run add_rfc7.py  (reuses uuid7 from to_rfc8.py)
 """
 import json
+import re
 import xml.etree.ElementTree as ET
 import shutil
 from pathlib import Path
@@ -43,6 +44,8 @@ OME_XML_HREF = "OME/METADATA.ome.xml"
 METADATA = "https://example.org/ome-xml-metadata/"  # ponytail: placeholder namespace
 SIDECAR = "https://example.org/ome-xml-sidecar/"  # ponytail: placeholder namespace
 BIO = "https://example.org/biological-metadata/"  # ponytail: placeholder namespace
+# omero channel label -> element_names slug (^[a-z][a-z0-9_]*$)
+ELEMENT_NAMES = {"LaminB1": "lamin_b1", "Dapi": "dapi"}
 BIO_CHANNELS = {
     "Dapi": {
         "entities": [{"name": "DAPI", "role": "signal", "external_id": "chebi:51231"},
@@ -95,16 +98,19 @@ def add_coordinates(group: Path, features: set) -> None:
     c = next(i for i, a in enumerate(axes) if a["type"] == "channel")
     n = load(group / ome["scales"][0]["path"]["href"])["shape"][c]
     values = [uuid7() for _ in range(n)]
-    coords = [{"id": uuid7(), "axis": axes[c]["name"], "values": values}]
+    omero = next((t for t in ome["traits"] if t["type"] == RENDERING + "rendering"), None)
+    # element_names: local slugs for scripting, never reference targets; segs use their own name
+    names = [ELEMENT_NAMES[ch["label"]] for ch in omero["channels"]] if omero else [ome["name"]]
+    coords = [{"id": uuid7(), "type": "channel", "axis": axes[c]["name"],
+               "element_ids": values, "element_names": names}]
     # core field next to coordinate_systems (dict order keeps it adjacent in the JSON)
     items = list(ome.items())
     items.insert(list(ome).index("coordinate_systems") + 1, ("coordinates", coords))
     ome = dict(items)
     doc["attributes"]["ome"] = ome
     # omero rendering extension -> default_rendering, channels by UUID instead of index
-    omero = next((t for t in ome["traits"] if t["type"] == RENDERING + "rendering"), None)
     if omero:  # only the image (the image node) has it
-        coords.append({"id": uuid7(), "axis": "z",
+        coords.append({"id": uuid7(), "type": "space", "axis": "z",
                        "intervals": [{"id": uuid7(), **iv} for iv in Z_INTERVALS]})
         ome["traits"].remove(omero)
         ome["extension_manifest"] = [m for m in ome["extension_manifest"] if m["id"] != RENDERING]
@@ -224,8 +230,13 @@ def check(out: Path, features: set) -> None:
         ome = load(g)["attributes"]["ome"]
         co, *rest = ome["coordinates"]
         shape = load(g / ome["scales"][0]["path"]["href"])["shape"]
-        assert len(co["values"]) == shape[0], g
-        ids += [co["id"], *co["values"]]
+        axis_types = {a["name"]: a["type"] for a in ome["coordinate_systems"][0]["axes"]}
+        assert all(axis_types[x["axis"]] == x["type"] for x in ome["coordinates"]), g
+        assert [x["type"] for x in ome["coordinates"]].count("channel") == 1, g
+        assert len(co["element_ids"]) == len(co["element_names"]) == shape[0], g
+        assert all(re.fullmatch(r"[a-z][a-z0-9_]*", n) for n in co["element_names"]), g
+        assert len(set(co["element_names"])) == len(co["element_names"]), g
+        ids += [co["id"], *co["element_ids"]]
         for z in rest:  # z intervals fit inside the z axis
             assert all(0 <= iv["start"] < iv["stop"] <= shape[1] for iv in z["intervals"]), g
             ids += [z["id"], *(iv["id"] for iv in z["intervals"])]
@@ -233,7 +244,7 @@ def check(out: Path, features: set) -> None:
         types |= {t["type"] for t in ome["traits"]}
         for t in ome["traits"]:
             if t["type"] == BIO + "biological_metadata":
-                assert {ch["channel"]["ref"] for ch in t["channels"]} <= set(co["values"]), g
+                assert {ch["channel"]["ref"] for ch in t["channels"]} <= set(co["element_ids"]), g
                 for ch in t["channels"]:  # relationships only name entities of the same channel
                     names = {e["name"] for e in ch["entities"]}
                     assert all({r["subject"], r["object"]} <= names for r in ch.get("relationships", [])), g
@@ -242,10 +253,10 @@ def check(out: Path, features: set) -> None:
                 sizes = [int(px.get(f"Size{a}")) for a in "CZYX"]
                 assert sizes == shape, (sizes, shape)
             if t["type"] == METADATA + "ome_xml_metadata":
-                assert [ch["channel"]["ref"] for ch in t["channels"]] == co["values"], g
+                assert [ch["channel"]["ref"] for ch in t["channels"]] == co["element_ids"], g
                 assert all("fluor" in ch for ch in t["channels"]), g
             if t["type"] == "default_rendering":
-                assert [ch["channel"]["ref"] for ch in t["channels"]] == co["values"], g
+                assert [ch["channel"]["ref"] for ch in t["channels"]] == co["element_ids"], g
     assert len(ids) == len(set(ids))
     trait = {"bio": BIO + "biological_metadata", "ome_metadata": METADATA + "ome_xml_metadata",
              "sidecar": SIDECAR + "ome_xml_sidecar", "rendering": "default_rendering"}
