@@ -56,6 +56,30 @@ Some fields were filled in **only to demonstrate the format**. They may not matc
 `vizarr/` is a vendored copy of [biongff/vizarr](https://github.com/biongff/vizarr) (MIT, license kept)
 with draft RFC-8/RFC-7 support; see `vizarr/VENDORED.md`.
 
+### See the metadata in vizarr
+
+Needs Node.js + pnpm, and hydrated examples (see [Hydrate](#hydrate)).
+
+```sh
+npx http-server -p 8000 --cors      # terminal 1, in this folder: serves the .zarr examples
+cd vizarr && pnpm install && pnpm dev   # terminal 2: viewer on http://localhost:5173
+```
+
+Then open (ports as above; vite picks the next free port if 5173 is taken):
+
+- [rfc7_1_coordinates](http://localhost:5173/?source=http://localhost:8000/rfc7_1_coordinates.zarr): channel names from `element_names`, channel UUID in the popover
+- [rfc7_2_bio](http://localhost:5173/?source=http://localhost:8000/rfc7_2_bio.zarr): + biological metadata popover
+- [rfc7_3_rendering](http://localhost:5173/?source=http://localhost:8000/rfc7_3_rendering.zarr): + colors/windows/z from `default_rendering`
+- [rfc7_4_ome_metadata](http://localhost:5173/?source=http://localhost:8000/rfc7_4_ome_metadata.zarr): (OME-XML metadata not displayed yet)
+- [rfc7_5_sidecar](http://localhost:5173/?source=http://localhost:8000/rfc7_5_sidecar.zarr): (sidecar not displayed yet)
+- [rfc7_6_labels](http://localhost:5173/?source=http://localhost:8000/rfc7_6_labels.zarr): + embedded segmentation as a label layer
+- [rfc7_7_collection](http://localhost:5173/?source=http://localhost:8000/rfc7_7_collection.zarr): collection: image + `seg_dapi` / `seg_laminb1` as label layers
+- [original OME-Zarr 0.5](http://localhost:5173/?source=http://localhost:8000/6001240_labels.zarr): unchanged upstream behaviour
+
+What to look for: channel names with a dotted underline open a popover (click) with the channel
+`element_names`, UUID, and biological metadata (CURIEs link to bioregistry.io); label names under
+"labels:" do the same for segmentations; the Z slider marks the labelled interval, named below it.
+
 ## AI use
 
 Code, metadata and this README were drafted with Claude Code (Claude Opus 5.5, `claude-opus-5-5`),
