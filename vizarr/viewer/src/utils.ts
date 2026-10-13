@@ -1,0 +1,722 @@
+import * as zarr from "zarrita";
+
+import type * as viv from "@vivjs/types";
+import ZipFileStore from "@zarrita/storage/zip";
+import type { ZarrPixelSource } from "./ZarrPixelSource";
+import type { GridLayerProps } from "./layers/grid-layer";
+import type { LabelLayerProps } from "./layers/label-layer";
+import type { ImageLayerProps, MultiscaleImageLayerProps } from "./layers/viv-layers";
+import { lru } from "./lru-store";
+import type { ViewState, VizarrLayer } from "./state";
+
+import { Matrix4 } from "math.gl";
+
+export const MAX_CHANNELS = 6;
+
+export const COLORS = {
+  cyan: "#00FFFF",
+  yellow: "#FFFF00",
+  magenta: "#FF00FF",
+  red: "#FF0000",
+  green: "#00FF00",
+  blue: "#0000FF",
+  white: "#FFFFFF",
+};
+export const MAGENTA_GREEN = [COLORS.magenta, COLORS.green];
+export const RGB = [COLORS.red, COLORS.green, COLORS.blue];
+export const CYMRGB = Object.values(COLORS).slice(0, MAX_CHANNELS);
+export const OME_VALIDATOR_URL = "https://ome.github.io/ome-ngff-validator/";
+
+export async function normalizeStore(source: string | zarr.Readable): Promise<zarr.Location<zarr.Readable>> {
+  if (typeof source === "string") {
+    let store: zarr.Readable;
+    let path: `/${string}` = "/";
+    if (source.endsWith(".json")) {
+      // import custom store implementation
+      const [{ default: ReferenceStore }, json] = await Promise.all([
+        import("@zarrita/storage/ref"),
+        fetch(source).then((res) => res.json()),
+      ]);
+      store = ReferenceStore.fromSpec(json);
+    } else {
+      // try ZipFileStore first, fallback to FetchStore
+      try {
+        const zipStore = ZipFileStore.fromUrl(source);
+        await zipStore.has("/"); // will throw an error for non-zipped
+        store = zipStore;
+      } catch {
+        const url = new URL(source);
+        // grab the path and then set the URL to the root
+        path = ensureAbsolutePath(url.pathname);
+        url.pathname = "/";
+        store = new zarr.FetchStore(url.href);
+      }
+    }
+
+    // Wrap remote stores in a cache
+    return new zarr.Location(lru(store), path);
+  }
+
+  return zarr.root(source);
+}
+
+function ensureAbsolutePath(path: string): `/${string}` {
+  if (path === "/") return path;
+  // @ts-expect-error - path always starts with '/'
+  return path.startsWith("/") ? path : `/${path}`;
+}
+
+export async function open(source: string | zarr.Readable) {
+  const location = await normalizeStore(source);
+  return zarr.open(location);
+}
+
+export async function getAttrsOnly<T = unknown>(
+  location: zarr.Location<zarr.Readable>,
+  options: { path?: string; zarrVersion: 2 | 3 },
+) {
+  const decoder = new TextDecoder();
+  if (options.path) {
+    location = location.resolve(options.path);
+  }
+  if (options.zarrVersion === 3) {
+    const attrs = await zarr.open.v3(location).then((node) => node.attrs);
+    return resolveAttrs(attrs) as T;
+  }
+  const v2AttrsLocation = location.resolve(".zattrs");
+  const maybeBytes = await location.store.get(v2AttrsLocation.path);
+  const attrs = maybeBytes ? JSON.parse(decoder.decode(maybeBytes)) : {};
+  return resolveAttrs(attrs) as T;
+}
+
+/**
+ * Loads the multiscales from a group and returns the datasets.
+ *
+ * NOTE: We avoid loading the attributes here because we don't need them.
+ */
+export async function loadMultiscales(
+  grp: zarr.Group<zarr.Readable>,
+  multiscales: Ome.Multiscale[],
+): Promise<Array<zarr.Array<zarr.DataType, zarr.Readable>>> {
+  const { datasets } = multiscales[0] || [{ path: "0" }];
+  return Promise.all(
+    // TODO(Trevor): TS is not happy about { attrs: false }.
+    // This is just missing from zarrita types, but it is ok and
+    // avoids making unecessary requests for v2 (see: https://github.com/manzt/zarrita.js/blob/7edffbeefb0eb877df48f54c7e8def4219c69c59/packages/zarrita/CHANGELOG.md?plain=1#L214)
+    datasets.map(({ path }) => zarr.open(grp.resolve(path), { kind: "array", attrs: false } as { kind: "array" })),
+  );
+}
+
+export function hexToRGB(hex: string): [r: number, g: number, b: number] {
+  if (hex.startsWith("#")) hex = hex.slice(1);
+  const r = Number.parseInt(hex.slice(0, 2), 16);
+  const g = Number.parseInt(hex.slice(2, 4), 16);
+  const b = Number.parseInt(hex.slice(4, 6), 16);
+  return [r, g, b];
+}
+
+export function range(length: number): number[] {
+  return Array.from({ length }, (_, i) => i);
+}
+
+// similar to Python's rstrip
+export function rstrip(str: string, remove = " "): string {
+  // if the last character is in 'remove', truncate
+  while (str.length > 0 && remove.includes(str.charAt(str.length - 1))) {
+    str = str.substr(0, str.length - 1);
+  }
+  return str;
+}
+
+export function join(...args: (string | undefined)[]) {
+  return args
+    .filter((s) => s !== undefined)
+    .map((s) => rstrip(s, "/"))
+    .join("/");
+}
+
+export function getAxisLabels(
+  arr: zarr.Array<zarr.DataType, zarr.Readable>,
+  axis_labels?: string[],
+): [...string[], "y", "x"] {
+  if (!axis_labels || axis_labels.length !== arr.shape.length) {
+    // default axis_labels are e.g. ['0', '1', 'y', 'x']
+    const nonXYaxisLabels = arr.shape.slice(0, -2).map((_, i) => `${i}`);
+    axis_labels = nonXYaxisLabels.concat(["y", "x"]);
+  }
+  return axis_labels as [...string[], "y", "x"];
+}
+
+export function getDefaultChannelLabels(nChannels: number): string[] {
+  // e.g. ['channel_0', 'channel_1']
+  return range(nChannels).map((i) => `channel_${i}`);
+}
+
+function getDefaultType(name: string): string {
+  if (name === "t") return "time";
+  if (name === "c") return "channel";
+  return "space";
+}
+
+//schema layer, any appropriate here as we have no information about the data
+// Returns axes in the latest v0.4+ format.
+// defaults for v0.1 & v0.2
+export function getNgffAxes(multiscales: unknown[]): Ome.Axis[] {
+  // v0.3 & v0.4+
+  if (
+    typeof multiscales[0] === "object" &&
+    multiscales[0] &&
+    "axes" in multiscales[0] &&
+    Array.isArray(multiscales[0].axes)
+  ) {
+    return multiscales[0].axes.map((axis) => {
+      // axis may be string 'x' (v0.3) or object
+      if (typeof axis === "string") {
+        return { name: axis, type: getDefaultType(axis) };
+      }
+      const { name, type, unit } = axis;
+      return { name, type: type ?? getDefaultType(name), unit };
+    });
+  }
+
+  const default_axes = [
+    { type: "channel", name: "c" },
+    { type: "space", name: "z" },
+    { type: "space", name: "y" },
+    { type: "space", name: "x" },
+  ];
+  return default_axes;
+}
+
+export function getNgffAxisLabels(axes: Ome.Axis[]): [...string[], "y", "x"] {
+  const axes_names = axes.map((axis) => axis.name);
+  return axes_names as [...string[], "y", "x"];
+}
+
+export function getDefaultVisibilities(n: number, visibilities?: boolean[]): boolean[] {
+  if (!visibilities) {
+    if (n <= MAX_CHANNELS) {
+      // Default to all on if visibilities not specified and less than 6 channels.
+      visibilities = Array(n).fill(true);
+    } else {
+      // If more than MAX_CHANNELS, only make first set on by default.
+      visibilities = [...Array(MAX_CHANNELS).fill(true), ...Array(n - MAX_CHANNELS).fill(false)];
+    }
+  }
+  return visibilities;
+}
+
+export function getDefaultColors(n: number, visibilities: boolean[]): string[] {
+  let colors = [];
+  if (n === 1) {
+    colors = [COLORS.white];
+  } else if (n === 2) {
+    colors = MAGENTA_GREEN;
+  } else if (n === 3) {
+    colors = RGB;
+  } else if (n <= MAX_CHANNELS) {
+    colors = CYMRGB.slice(0, n);
+  } else {
+    // Default color for non-visible is white
+    colors = Array(n).fill(COLORS.white);
+    // Get visible indices
+    const visibleIndices = visibilities.flatMap((bool, i) => (bool ? i : []));
+    // Set visible indices to CYMRGB colors. visibleIndices.length === MAX_CHANNELS from above.
+    for (const [i, visibleIndex] of visibleIndices.entries()) {
+      colors[visibleIndex] = CYMRGB[i];
+    }
+  }
+  return colors;
+}
+
+export function isInterleaved(shape: number[]) {
+  const lastDimSize = shape[shape.length - 1];
+  return lastDimSize === 3 || lastDimSize === 4;
+}
+
+export function guessTileSize(arr: zarr.Array<zarr.DataType, zarr.Readable>) {
+  const interleaved = isInterleaved(arr.shape);
+  const [ySize, xSize] = arr.chunks.slice(interleaved ? -3 : -2);
+  const size = Math.min(ySize, xSize);
+  // Needs to be a power of 2 for deck.gl
+  return 2 ** Math.floor(Math.log2(size));
+}
+
+// Scales the real image size to the target viewport.
+export function fitImageToViewport(options: {
+  image: { width: number; height: number };
+  viewport: { width: number; height: number };
+  padding: number;
+  matrix?: Matrix4;
+}): ViewState {
+  const { image, viewport, padding, matrix = new Matrix4().identity() } = options;
+  const corners = [
+    [0, 0, 0],
+    [image.width, 0, 0],
+    [image.width, image.height, 0],
+    [0, image.height, 0],
+  ].map((corner) => matrix.transformAsPoint(corner));
+
+  const minX = Math.min(...corners.map((p) => p[0]));
+  const maxX = Math.max(...corners.map((p) => p[0]));
+  const minY = Math.min(...corners.map((p) => p[1]));
+  const maxY = Math.max(...corners.map((p) => p[1]));
+
+  const availableWidth = viewport.width - 2 * padding;
+  const availableHeight = viewport.height - 2 * padding;
+
+  return {
+    zoom: Math.log2(
+      Math.min(
+        availableWidth / (maxX - minX), // scaleX
+        availableHeight / (maxY - minY), // scaleY
+      ),
+    ),
+    target: [(minX + maxX) / 2, (minY + maxY) / 2],
+  };
+}
+
+type Array16 = [
+  number,
+  number,
+  number,
+  number,
+  number,
+  number,
+  number,
+  number,
+  number,
+  number,
+  number,
+  number,
+  number,
+  number,
+  number,
+  number,
+];
+
+function isArray16(o: unknown): o is Array16 {
+  if (!Array.isArray(o)) return false;
+  return o.length === 16 && o.every((i) => typeof i === "number");
+}
+
+export function parseMatrix(model_matrix?: string | number[]): Matrix4 {
+  if (!model_matrix) {
+    return Matrix4.IDENTITY;
+  }
+  const matrix = new Matrix4();
+  try {
+    const arr = typeof model_matrix === "string" ? JSON.parse(model_matrix) : model_matrix;
+    assert(isArray16(arr), "Invalid modelMatrix size. Must be 16.");
+    matrix.setRowMajor(...arr);
+  } catch {
+    const msg = `Failed to parse modelMatrix. Got ${JSON.stringify(model_matrix)}, using identity.`;
+    console.warn(msg);
+  }
+  return matrix;
+}
+
+export async function calcDataRange(
+  source: ZarrPixelSource,
+  selection: Array<number>,
+): Promise<[min: number, max: number]> {
+  if (source.dtype === "Uint8") return [0, 255];
+  const { data } = await source.getRaster({ selection });
+  let minVal = Number.POSITIVE_INFINITY;
+  let maxVal = Number.NEGATIVE_INFINITY;
+  for (let i = 0; i < data.length; i++) {
+    if (data[i] > maxVal) maxVal = data[i];
+    if (data[i] < minVal) minVal = data[i];
+  }
+  if (minVal === maxVal) {
+    minVal = 0;
+    maxVal = 1;
+  }
+  return [minVal, maxVal];
+}
+
+export async function calcConstrastLimits(
+  source: ZarrPixelSource,
+  channelAxis: number,
+  visibilities: boolean[],
+  defaultSelection?: number[],
+): Promise<([min: number, max: number] | undefined)[]> {
+  const def = defaultSelection ?? source.shape.map(() => 0);
+  const csize = source.shape[channelAxis];
+
+  // channelAxis can be -1 if there is no 'c' dimension
+  if (channelAxis !== -1) {
+    assert(csize === visibilities.length, "visibilities do not match number of channels");
+  }
+
+  return Promise.all(
+    visibilities.map(async (isVisible, i) => {
+      if (!isVisible) return undefined; // don't compute non-visible channels
+      const selection = [...def];
+      if (channelAxis > -1) {
+        selection[channelAxis] = i;
+      }
+      return calcDataRange(source, selection);
+    }),
+  );
+}
+
+/**
+ * Create a promise that can be resolved or rejected externally.
+ *
+ * TODO: Switch to Promise.withResolvers when it's available
+ */
+export function defer<T>() {
+  let resolve: (value: T | PromiseLike<T>) => void;
+  let reject: (reason?: unknown) => void;
+  const promise = new Promise<T>((res, rej) => {
+    resolve = res;
+    reject = rej;
+  });
+  // @ts-expect-error - resolve and reject are OK
+  return { promise, resolve, reject };
+}
+
+/**
+ * A simple event emitter that allows for typed events.
+ *
+ * @example
+ * ```ts
+ * const emitter = typedEmitter<{ foo: string, bar: number }>();
+ * emitter.on('foo', (data) => console.log(data));
+ * emitter.emit('foo', 'hello');
+ * ```
+ *
+ * TODO: Add support for removing listeners.
+ */
+export function typedEmitter<T>() {
+  let target = new EventTarget();
+  return {
+    on: <E extends keyof T & string>(event: E, cb: (data: T[E]) => void) => {
+      target.addEventListener(event, (e) => cb((e as CustomEvent).detail));
+    },
+    emit: <E extends keyof T & string>(event: E, data: T[E]) => {
+      target.dispatchEvent(new CustomEvent(event, { detail: data }));
+    },
+  };
+}
+/**
+ * Extracts the OME metadata from the zarr attributes
+ *
+ * TODO: We should use zod to handle this
+ */
+
+// biome-ignore lint/suspicious/noExplicitAny: draft RFC-8/RFC-7 JSON, no schema yet
+type Rfc8 = any;
+
+/** Draft RFC-8 multiscale (`ome.type: "multiscale"`, `scales`), possibly with RFC-7 `coordinates`. */
+export function isRfc8Multiscale(attrs: zarr.Attributes): boolean {
+  const ome = attrs.ome as Rfc8;
+  return typeof ome === "object" && ome?.type === "multiscale" && Array.isArray(ome.scales);
+}
+
+const href = (p: Rfc8): string => p.href.replace(/^\.\//, "");
+
+/** Draft RFC-8 collection: `ome.type: "collection"` with `nodes[].path.href`. */
+export function rfc8CollectionNodes(attrs: zarr.Attributes): { name?: string; href: string }[] | undefined {
+  const ome = attrs.ome as Rfc8;
+  if (typeof ome !== "object" || ome?.type !== "collection") return undefined;
+  return (ome.nodes ?? [])
+    .filter((n: Rfc8) => n.type === "multiscale")
+    .map((n: Rfc8) => ({ name: n.name, href: href(n.path) }));
+}
+
+/** Ids of the multiscales a draft RFC-8 segmentation (`labels` trait) was made from; undefined if not one. */
+export function rfc8LabelSources(attrs: zarr.Attributes): string[] | undefined {
+  const t = ((attrs.ome as Rfc8)?.traits ?? []).find((t: Rfc8) => t.type === "labels");
+  return t ? (t.source ?? []).map((s: Rfc8) => s.ref) : undefined;
+}
+
+/** RFC-7 biological_metadata for one channel. */
+export type Rfc7Bio = {
+  entities: { name: string; role: string; external_id?: string }[];
+  relationships?: { subject: string; relation: string; object: string }[];
+};
+
+/** RFC-7 channel: identity (element_ids / element_names) plus optional biological_metadata. */
+export type Rfc7Channel = { id: string; name?: string; bio?: Rfc7Bio };
+
+/** RFC-7 labelled interval on an axis (index space at scale 0, half-open). */
+export type Rfc7Interval = { start: number; stop: number; label?: string };
+
+/**
+ * Adapt a draft RFC-8 multiscale to the 0.4/0.5 shape the viewer reads.
+ * RFC-7: channel order from `coordinates` element_ids; `default_rendering` -> omero;
+ * `biological_metadata` -> per-channel entities/relationships. RFC-8 `labels` trait colors and
+ * `embedded_labels` nodes are passed through for the label layers.
+ */
+function fromRfc8(ome: Rfc8): zarr.Attributes {
+  const traits: Rfc8[] = ome.traits ?? [];
+  const co = (ome.coordinates ?? []).find((c: Rfc8) => c.type === "channel");
+  const ids: string[] = co ? [co.element_ids].flat() : [];
+  const names: string[] = co?.element_names ? [co.element_names].flat() : [];
+  const byChannel = (t: Rfc8) => {
+    const unknown = (t?.channels ?? []).filter((c: Rfc8) => !ids.includes(c.channel?.ref));
+    if (unknown.length) console.warn(`${t.type}: channel refs not in coordinates element_ids`, unknown);
+    return ids.map((id) => (t?.channels ?? []).find((c: Rfc8) => c.channel?.ref === id));
+  };
+  const out: Record<string, unknown> = {
+    multiscales: [
+      {
+        axes: ome.coordinate_systems[0].axes,
+        datasets: ome.scales.map((s: Rfc8) => ({
+          path: href(s.path),
+          coordinateTransformations: s.coordinate_transformations,
+        })),
+      },
+    ],
+  };
+  if (names.length) out.rfc7_names = names;
+  const rendering = traits.find((t) => t.type === "default_rendering");
+  const rendered = rendering ? byChannel(rendering) : [];
+  if (rendering && rendered.every((c) => c?.window && c.color)) {
+    out.omero = {
+      rdefs: rendering.rdefs,
+      channels: rendered.map((c, i) => ({ ...c, label: c.label ?? names[i] })),
+    };
+  } else if (rendering) {
+    // ponytail: partial rendering -> ignore it all and use data-derived defaults
+    console.warn("default_rendering does not cover every channel; using defaults", rendering);
+  }
+  const bio = traits.find((t) => String(t.type).endsWith("/biological_metadata"));
+  const bios = bio ? byChannel(bio) : [];
+  out.rfc7_channels = ids.map(
+    (id, i): Rfc7Channel => ({
+      id,
+      name: names[i],
+      bio: bios[i] && { entities: bios[i].entities ?? [], relationships: bios[i].relationships },
+    }),
+  );
+  const intervals: Record<string, Rfc7Interval[]> = {};
+  for (const c of ome.coordinates ?? []) if (c.axis && c.intervals) intervals[c.axis] = c.intervals;
+  out.rfc7_intervals = intervals;
+  const labels = traits.find((t) => t.type === "labels");
+  if (labels) {
+    out.rfc8_label_colors = (labels.label_attributes ?? [])
+      .filter((a: Rfc8) => a.color)
+      .map((a: Rfc8) => ({ labelValue: a.label_value, rgba: a.color }));
+  }
+  const embedded = traits.find((t) => String(t.type).endsWith("/embedded_labels"));
+  if (embedded) out.rfc8_labels = embedded.nodes.map((n: Rfc8) => href(n.path));
+  return out;
+}
+
+export function resolveAttrs(attrs: zarr.Attributes): zarr.Attributes {
+  if (isRfc8Multiscale(attrs)) {
+    return fromRfc8(attrs.ome);
+  }
+  if ("omero" in attrs && "ome" in attrs) {
+    return {
+      version: typeof attrs.ome === "object" && attrs.ome !== null && "version" in attrs.ome ? attrs.ome.version : "",
+      multiscales:
+        typeof attrs.ome === "object" && attrs.ome !== null && "multiscales" in attrs.ome ? attrs.ome.multiscales : {},
+      omero: {
+        channels:
+          typeof attrs.omero === "object" && attrs.omero !== null && "channels" in attrs.omero
+            ? attrs.omero.channels
+            : {},
+      },
+    };
+  }
+  if ("ome" in attrs) {
+    // @ts-expect-error - handles v0.5
+    return attrs.ome;
+  }
+  return attrs;
+}
+/**
+ * Error thrown when an assertion fails.
+ */
+export class AssertionError extends Error {
+  /** @param message The error message. */
+  constructor(message: string) {
+    super(message);
+    this.name = "AssertionError";
+  }
+}
+
+/**
+ * Error thrown when we want to redirect.
+ */
+export class RedirectError extends Error {
+  url: string;
+
+  /**
+   * @param message The error message.
+   * @param url The url to redirect to.
+   */
+  constructor(message: string, url: string) {
+    super(message);
+    this.name = "RedirectError";
+    this.url = url;
+  }
+}
+
+/**
+ * Make an assertion. An error is thrown if `expr` does not have truthy value.
+ *
+ * @param expr The expression to test.
+ * @param msg The message to display if the assertion fails.
+ */
+export function assert(expr: unknown, msg = ""): asserts expr {
+  if (!expr) {
+    throw new AssertionError(msg);
+  }
+}
+
+/**
+ * Guess the zarr version of a store.
+ */
+export async function guessZarrVersion(location: zarr.Location<zarr.Readable>): Promise<2 | 3> {
+  try {
+    await zarr.open.v3(location);
+    return 3;
+  } catch (err) {
+    if (!(err instanceof zarr.NodeNotFoundError)) {
+      // rethrow if not a NodeNotFoundError
+      throw err;
+    }
+    return 2;
+  }
+}
+
+export function isOmePlate(attrs: zarr.Attributes): attrs is { plate: Ome.Plate } {
+  return "plate" in attrs;
+}
+
+export function isOmeWell(attrs: zarr.Attributes): attrs is { well: Ome.Well } {
+  return "well" in attrs;
+}
+
+export function isOmeImageLabel(
+  attrs: zarr.Attributes,
+): attrs is { "image-label": Ome.ImageLabel; multiscales: Ome.Multiscale[] } {
+  return "image-label" in attrs && isMultiscales(attrs);
+}
+
+export function isOmeMultiscales(attrs: zarr.Attributes): attrs is { omero: Ome.Omero; multiscales: Ome.Multiscale[] } {
+  return "omero" in attrs && isMultiscales(attrs);
+}
+
+export function isMultiscales(attrs: zarr.Attributes): attrs is { multiscales: Ome.Multiscale[] } {
+  return "multiscales" in attrs;
+}
+
+export function isBioformats2rawlayout(attrs: zarr.Attributes): attrs is { multiscales: Ome.Bioformats2rawlayout } {
+  return "bioformats2raw.layout" in attrs;
+}
+
+/**
+ * Ensures an error matches expected type(s), otherwise rethrows.
+ *
+ * Unmatched errors bubble up, like Python's `except`. Narrows error types for
+ * type-safe property access.
+ *
+ * Usage
+ * @example
+ * ```ts
+ * class DatabaseError extends Error {}
+ * class NetworkError extends Error {}
+ *
+ * try {
+ *   await db.query();
+ * } catch (error) {
+ *   rethrowUnless(error, DatabaseError, NetworkError);
+ *   error; // DatabaseError | NetworkError
+ * }
+ * ```
+ *
+ * @param error - The error to check
+ * @param ErrorClasses - Expected error type(s)
+ * @throws The original error if it doesn't match expected type(s)
+ *
+ * @copyright Trevor Manz 2025
+ * @license MIT
+ * @see {@link https://github.com/manzt/manzt/blob/4b04f2/utils/rethrow-unless.js}
+ */
+// biome-ignore lint/suspicious/noExplicitAny: Ok to use any for generic constraint
+export function rethrowUnless<E extends ReadonlyArray<new (...args: any[]) => Error>>(
+  error: unknown,
+  ...ErrorClasses: E
+  // biome-ignore lint/suspicious/noExplicitAny: Ok to use any for generic constraint
+): asserts error is E[number] extends new (...args: any[]) => infer R ? R : never {
+  if (!ErrorClasses.some((ErrorClass) => error instanceof ErrorClass)) {
+    throw error;
+  }
+}
+
+export function isGridLayerProps(
+  props: GridLayerProps | ImageLayerProps | MultiscaleImageLayerProps | LabelLayerProps,
+): props is GridLayerProps {
+  return "loaders" in props && "rows" in props && "columns" in props;
+}
+
+export function resolveLoaderFromLayerProps(
+  layerProps: GridLayerProps | ImageLayerProps | MultiscaleImageLayerProps | LabelLayerProps,
+) {
+  return isGridLayerProps(layerProps) ? layerProps.loaders[0].loader : layerProps.loader;
+}
+
+/**
+ * Builds N-tuples of elements from the given N arrays with matching indices,
+ * stopping when the smallest array's end is reached.
+ */
+export function zip<T extends unknown[]>(...arrays: { [K in keyof T]: ReadonlyArray<T[K]> }): T[] {
+  const minLength = arrays.reduce((minLength, arr) => Math.min(arr.length, minLength), Number.POSITIVE_INFINITY);
+  const result: T[] = new Array(minLength);
+  for (let i = 0; i < minLength; i += 1) {
+    const arr = arrays.map((it) => it[i]);
+    result[i] = arr as T;
+  }
+  return result;
+}
+
+export function getLayerSize({ props }: VizarrLayer) {
+  const loader = resolveLoaderFromLayerProps(props);
+  const [baseResolution, maxZoom] = Array.isArray(loader) ? [loader[0], loader.length] : [loader, 0];
+  const interleaved = isInterleaved(baseResolution.shape);
+  let [height, width] = baseResolution.shape.slice(interleaved ? -3 : -2);
+  if (isGridLayerProps(props)) {
+    // TODO: Don't hardcode spacer size. Probably best to inspect the deck.gl Layers rather than
+    // the Layer Props.
+    const spacer = 5;
+    height = (height + spacer) * props.rows;
+    width = (width + spacer) * props.columns;
+  }
+  return { height, width, maxZoom };
+}
+
+// @TODO: remove after updating deck.gl
+// From deck.gl geo-layers tileset-2d utils
+export function transformBox(bbox: number[], modelMatrix: Matrix4): number[] {
+  const transformedCoords = [
+    // top-left
+    modelMatrix.transformAsPoint([bbox[0], bbox[1]]),
+    // top-right
+    modelMatrix.transformAsPoint([bbox[2], bbox[1]]),
+    // bottom-left
+    modelMatrix.transformAsPoint([bbox[0], bbox[3]]),
+    // bottom-right
+    modelMatrix.transformAsPoint([bbox[2], bbox[3]]),
+  ];
+  const transformedBox = [
+    // Minimum x coord
+    Math.min(...transformedCoords.map((i) => i[0])),
+    // Minimum y coord
+    Math.min(...transformedCoords.map((i) => i[1])),
+    // Max x coord
+    Math.max(...transformedCoords.map((i) => i[0])),
+    // Max y coord
+    Math.max(...transformedCoords.map((i) => i[1])),
+  ];
+  return transformedBox;
+}
+
+export function arraysIdentical(arr1: Array<string | number>, arr2: Array<string | number>): boolean {
+  return arr1.length === arr2.length && arr1.every((element, index) => element === arr2[index]);
+}

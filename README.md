@@ -51,6 +51,11 @@ Some fields were filled in **only to demonstrate the format**. They may not matc
   (kept as an XML comment).
 - All extension namespaces (`https://example.org/...`) are placeholders.
 
+## Viewer
+
+`vizarr/` is a vendored copy of [biongff/vizarr](https://github.com/biongff/vizarr) (MIT, license kept)
+with draft RFC-8/RFC-7 support; see `vizarr/VENDORED.md`.
+
 ## AI use
 
 Code, metadata and this README were drafted with Claude Code (Claude Opus 5.5, `claude-opus-5-5`),

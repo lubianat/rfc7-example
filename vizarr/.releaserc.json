@@ -1,0 +1,47 @@
+{
+  "branches": ["main"],
+  "repositoryUrl": "https://github.com/BioNGFF/vizarr.git",
+  "tagFormat": "v${version}",
+  "plugins": [
+    "@semantic-release/commit-analyzer",
+    "@semantic-release/release-notes-generator",
+    [
+      "@semantic-release/changelog",
+      {
+        "changelogFile": "CHANGELOG.md",
+        "changelogTitle": "# Changelog"
+      }
+    ],
+    [
+      "@semantic-release/exec",
+      {
+        "prepareCmd": "pnpm -r exec npm version ${nextRelease.version} --no-git-tag-version"
+      }
+    ],
+    [
+      "@semantic-release/npm",
+      {
+        "npmPublish": false
+      }
+    ],
+    [
+      "@semantic-release/git",
+      {
+        "assets": ["package.json", "viewer/package.json", "sites/app/package.json", "pnpm-lock.yaml", "CHANGELOG.md"],
+        "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+      }
+    ],
+    [
+      "@semantic-release/github",
+      {
+        "releaseNameTemplate": "<%= nextRelease.version %>",
+        "assets": [
+          {
+            "path": "dist.tar.gz",
+            "label": "Build"
+          }
+        ]
+      }
+    ]
+  ]
+}
