@@ -2,3 +2,5 @@ __pycache__/
 .DS_Store
 # generated outputs: commit metadata only, chunks are rebuilt by the scripts (see README)
 rfc*.zarr/**/c/
+ZSNS001_zmax_lowres_0.5.zarr/
+vizarr/sites/app/.vite/

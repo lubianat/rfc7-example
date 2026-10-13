@@ -76,10 +76,7 @@ function AxisSlider({ axisIndex, max }: Props) {
               min={0}
               max={max}
               step={1}
-              marks={intervals.flatMap((iv) => [
-                { value: iv.start, label: "" },
-                { value: iv.stop - 1, label: "" },
-              ])}
+              marks={intervals.map((iv) => ({ value: iv.start }))}
             />
           </Grid>
         </Grid>

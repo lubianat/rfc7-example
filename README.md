@@ -51,6 +51,24 @@ Some fields were filled in **only to demonstrate the format**. They may not matc
   (kept as an XML comment).
 - All extension namespaces (`https://example.org/...`) are placeholders.
 
+## Zebrahub time-lapse example
+
+`zebrahub.py` -> `rfc7_zebrahub.zarr`: draft RFC-8 multiscale of Zebrahub **ZSNS001** (z max-projection,
+low-res; H2A.Z-mCherry nuclei, t,c,y,x, 791 frames) with RFC-7 `coordinates` for the channel and a **time
+axis with somite-stage intervals**, `default_rendering`, and `biological_metadata` whose `timelapse`
+block annotates each interval with a ZFS stage (`zfs:0000023` 1-4 somites ... `zfs:0000028` 26+ somites).
+
+> ⚠️ **Demo time mapping.** The source has no time unit and its frame -> hpf mapping is unknown. Intervals
+> assume a linear 10.33 hpf (frame 0) -> 24 hpf (last frame) and Kimmel et al. (1995) stage start times.
+> They are illustrative, not staged from the images.
+
+Source: `ZSNS001_zmax_lowres_0.5.zarr` (not committed, 94 MB), derived from
+https://public.czbiohub.org/royerlab/zebrahub/imaging/single-objective/ZSNS001.ome.zarr. Cite Lange et
+al., *Cell* 187, 6742–6759 (2024), https://doi.org/10.1016/j.cell.2024.09.047 (CC BY 4.0).
+Build: `uv run --with zarr --with scipy zebrahub.py`. View:
+[rfc7_zebrahub](http://localhost:5173/?source=http://localhost:8000/rfc7_zebrahub.zarr) (T slider marks
+each stage, the stage name shows below it; timelapse bio not rendered yet).
+
 ## Viewer
 
 `vizarr/` is a vendored copy of [biongff/vizarr](https://github.com/biongff/vizarr) (MIT, license kept)

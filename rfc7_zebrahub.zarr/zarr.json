@@ -1,0 +1,388 @@
+{
+  "attributes": {
+    "ome": {
+      "version": "0.x",
+      "type": "multiscale",
+      "id": "01a136d6-010d-77a6-b536-65a27f475f2c",
+      "name": "ZSNS001 Z max-intensity projection (low-res)",
+      "coordinate_systems": [
+        {
+          "id": "01a136d6-010d-7d7f-b04c-66a8f4415a99",
+          "name": "physical",
+          "axes": [
+            {
+              "name": "t",
+              "type": "time"
+            },
+            {
+              "name": "c",
+              "type": "channel"
+            },
+            {
+              "name": "y",
+              "type": "space",
+              "unit": "micrometer"
+            },
+            {
+              "name": "x",
+              "type": "space",
+              "unit": "micrometer"
+            }
+          ]
+        }
+      ],
+      "coordinates": [
+        {
+          "id": "01a136d6-010d-7ea1-8c0e-da27bf0aa854",
+          "type": "channel",
+          "axis": "c",
+          "element_ids": [
+            "01a136d6-010d-7902-942d-52c16cca5c71"
+          ],
+          "element_names": [
+            "h2az2a_mcherry"
+          ]
+        },
+        {
+          "id": "01a136d6-010d-7877-ab00-eaaac6b0e356",
+          "type": "time",
+          "axis": "t",
+          "intervals": [
+            {
+              "id": "01a136d6-010c-7044-8e99-719833df79fc",
+              "start": 0,
+              "stop": 77,
+              "label": "segmentation:1-4 somites"
+            },
+            {
+              "id": "01a136d6-010d-770e-a680-6d420f8ddb05",
+              "start": 77,
+              "stop": 212,
+              "label": "segmentation:5-9 somites"
+            },
+            {
+              "id": "01a136d6-010d-7085-a0a6-fb2f5785d266",
+              "start": 212,
+              "stop": 328,
+              "label": "segmentation:10-13 somites"
+            },
+            {
+              "id": "01a136d6-010d-7220-85d9-ce318379e9a6",
+              "start": 328,
+              "stop": 501,
+              "label": "segmentation:14-19 somites"
+            },
+            {
+              "id": "01a136d6-010d-734f-b6b6-8982e59431db",
+              "start": 501,
+              "stop": 674,
+              "label": "segmentation:20-25 somites"
+            },
+            {
+              "id": "01a136d6-010d-7127-af87-70528331f94d",
+              "start": 674,
+              "stop": 791,
+              "label": "segmentation:26+ somites"
+            }
+          ]
+        }
+      ],
+      "scales": [
+        {
+          "id": "01a136d6-010d-7be8-af96-152b778b6281",
+          "path": {
+            "type": "zarr",
+            "format": "relative",
+            "href": "./0"
+          },
+          "coordinate_transformations": [
+            {
+              "scale": [
+                1.0,
+                1.0,
+                3.512,
+                3.512
+              ],
+              "type": "scale",
+              "input": {
+                "type": "scale",
+                "ref": "01a136d6-010d-7be8-af96-152b778b6281"
+              },
+              "output": {
+                "type": "coordinate_system",
+                "ref": "01a136d6-010d-7d7f-b04c-66a8f4415a99"
+              }
+            }
+          ]
+        },
+        {
+          "id": "01a136d6-010d-7302-b084-1c3222d5acc3",
+          "path": {
+            "type": "zarr",
+            "format": "relative",
+            "href": "./1"
+          },
+          "coordinate_transformations": [
+            {
+              "scale": [
+                1.0,
+                1.0,
+                7.024,
+                7.024
+              ],
+              "type": "scale",
+              "input": {
+                "type": "scale",
+                "ref": "01a136d6-010d-7302-b084-1c3222d5acc3"
+              },
+              "output": {
+                "type": "coordinate_system",
+                "ref": "01a136d6-010d-7d7f-b04c-66a8f4415a99"
+              }
+            }
+          ]
+        },
+        {
+          "id": "01a136d6-010d-74c3-a36d-c9d1a043c040",
+          "path": {
+            "type": "zarr",
+            "format": "relative",
+            "href": "./2"
+          },
+          "coordinate_transformations": [
+            {
+              "scale": [
+                1.0,
+                1.0,
+                14.048,
+                14.048
+              ],
+              "type": "scale",
+              "input": {
+                "type": "scale",
+                "ref": "01a136d6-010d-74c3-a36d-c9d1a043c040"
+              },
+              "output": {
+                "type": "coordinate_system",
+                "ref": "01a136d6-010d-7d7f-b04c-66a8f4415a99"
+              }
+            }
+          ]
+        },
+        {
+          "id": "01a136d6-010d-76ed-be95-24d05f9e3d00",
+          "path": {
+            "type": "zarr",
+            "format": "relative",
+            "href": "./3"
+          },
+          "coordinate_transformations": [
+            {
+              "scale": [
+                1.0,
+                1.0,
+                28.096,
+                28.096
+              ],
+              "type": "scale",
+              "input": {
+                "type": "scale",
+                "ref": "01a136d6-010d-76ed-be95-24d05f9e3d00"
+              },
+              "output": {
+                "type": "coordinate_system",
+                "ref": "01a136d6-010d-7d7f-b04c-66a8f4415a99"
+              }
+            }
+          ]
+        },
+        {
+          "id": "01a136d6-010d-7d39-b750-c8763e25b15e",
+          "path": {
+            "type": "zarr",
+            "format": "relative",
+            "href": "./4"
+          },
+          "coordinate_transformations": [
+            {
+              "scale": [
+                1.0,
+                1.0,
+                56.192,
+                56.192
+              ],
+              "type": "scale",
+              "input": {
+                "type": "scale",
+                "ref": "01a136d6-010d-7d39-b750-c8763e25b15e"
+              },
+              "output": {
+                "type": "coordinate_system",
+                "ref": "01a136d6-010d-7d7f-b04c-66a8f4415a99"
+              }
+            }
+          ]
+        }
+      ],
+      "traits": [
+        {
+          "type": "default_rendering",
+          "rdefs": {},
+          "channels": [
+            {
+              "channel": {
+                "type": "channel",
+                "ref": "01a136d6-010d-7902-942d-52c16cca5c71"
+              },
+              "active": true,
+              "coefficient": 1,
+              "color": "FFFFFF",
+              "family": "linear",
+              "inverted": false,
+              "label": "fused",
+              "window": {
+                "end": 1500,
+                "max": 65535,
+                "min": 0,
+                "start": 0
+              }
+            }
+          ]
+        },
+        {
+          "type": "https://example.org/biological-metadata/biological_metadata",
+          "channels": [
+            {
+              "channel": {
+                "type": "channel",
+                "ref": "01a136d6-010d-7902-942d-52c16cca5c71"
+              },
+              "entities": [
+                {
+                  "name": "mCherry",
+                  "role": "signal"
+                },
+                {
+                  "name": "H2A.Z",
+                  "role": "target",
+                  "external_id": "uniprot:Q71PD7"
+                },
+                {
+                  "name": "nucleus",
+                  "role": "observed_entity",
+                  "external_id": "go:0005634"
+                },
+                {
+                  "name": "Danio rerio",
+                  "role": "organism",
+                  "external_id": "ncbitaxon:7955"
+                }
+              ],
+              "relationships": [
+                {
+                  "subject": "mCherry",
+                  "relation": "tags",
+                  "object": "H2A.Z"
+                },
+                {
+                  "subject": "H2A.Z",
+                  "relation": "located_in",
+                  "object": "nucleus"
+                }
+              ]
+            }
+          ],
+          "timelapse": [
+            {
+              "interval": {
+                "type": "interval",
+                "ref": "01a136d6-010c-7044-8e99-719833df79fc"
+              },
+              "entities": [
+                {
+                  "name": "segmentation:1-4 somites",
+                  "role": "developmental_stage",
+                  "external_id": "zfs:0000023"
+                }
+              ]
+            },
+            {
+              "interval": {
+                "type": "interval",
+                "ref": "01a136d6-010d-770e-a680-6d420f8ddb05"
+              },
+              "entities": [
+                {
+                  "name": "segmentation:5-9 somites",
+                  "role": "developmental_stage",
+                  "external_id": "zfs:0000024"
+                }
+              ]
+            },
+            {
+              "interval": {
+                "type": "interval",
+                "ref": "01a136d6-010d-7085-a0a6-fb2f5785d266"
+              },
+              "entities": [
+                {
+                  "name": "segmentation:10-13 somites",
+                  "role": "developmental_stage",
+                  "external_id": "zfs:0000025"
+                }
+              ]
+            },
+            {
+              "interval": {
+                "type": "interval",
+                "ref": "01a136d6-010d-7220-85d9-ce318379e9a6"
+              },
+              "entities": [
+                {
+                  "name": "segmentation:14-19 somites",
+                  "role": "developmental_stage",
+                  "external_id": "zfs:0000026"
+                }
+              ]
+            },
+            {
+              "interval": {
+                "type": "interval",
+                "ref": "01a136d6-010d-734f-b6b6-8982e59431db"
+              },
+              "entities": [
+                {
+                  "name": "segmentation:20-25 somites",
+                  "role": "developmental_stage",
+                  "external_id": "zfs:0000027"
+                }
+              ]
+            },
+            {
+              "interval": {
+                "type": "interval",
+                "ref": "01a136d6-010d-7127-af87-70528331f94d"
+              },
+              "entities": [
+                {
+                  "name": "segmentation:26+ somites",
+                  "role": "developmental_stage",
+                  "external_id": "zfs:0000028"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "extension_manifest": [
+        {
+          "id": "https://example.org/biological-metadata/",
+          "version": "0.1",
+          "schemas": []
+        }
+      ]
+    }
+  },
+  "zarr_format": 3,
+  "node_type": "group"
+}
